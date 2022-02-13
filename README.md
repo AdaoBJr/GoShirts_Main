@@ -1,6 +1,7 @@
-<img src="readme/nodejs_animation.gif" align="center" width="50" height="50" >
-
-<h1 align="center"> NodeJs - GraphQL - Redis </h1>
+<div align="center"> 
+  <img src="readme/nodejs_animation.gif" width="300">
+  <h1> GoShirts - ApolloServer </h1>
+</div>
 
 ## 🧑🏻‍💻🧑🏻‍💻Desenvolvido por
 
