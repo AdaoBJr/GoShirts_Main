@@ -1,4 +1,4 @@
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server';
 import 'dotenv/config';
 
 export default function startSever({ typeDefs, resolvers }) {
