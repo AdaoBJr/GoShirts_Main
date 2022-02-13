@@ -1,0 +1,8 @@
+{
+  "name": "GoShirts_ApolloServer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:AdaoBJr/GoShirts_ApolloServer.git",
+  "author": "PollyanaOliveira <pollyana.oliveir@gmail.com>",
+  "license": "MIT"
+}
