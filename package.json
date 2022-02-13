@@ -6,6 +6,8 @@
   "author": "PollyanaOliveira <pollyana.oliveir@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@graphql-tools/load-files": "^6.5.3",
+    "@graphql-tools/merge": "^8.2.2",
     "apollo-server": "^3.6.3"
   },
   "devDependencies": {
