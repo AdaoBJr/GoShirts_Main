@@ -1,0 +1,42 @@
+# INPUTS
+input CustomerDataInput {
+  email: String!
+}
+
+input CustomerInput {
+  email: String!
+  firstname: String!
+  lastname: String!
+  telephone: String!
+  cpf: String!
+  password: String!
+  date_of_birth: String!
+  gender: Int!
+}
+
+# RETURNS
+type Customer {
+  email: String!
+  firstname: String!
+  lastname: String!
+  telephone: String!
+  cpf: String!
+  password: String!
+  date_of_birth: String!
+  gender: Int!
+}
+
+type CreatedCustomer {
+  customer: Customer!
+}
+
+# QUERIES / MUTATIONS
+
+type Query {
+  customerList: [Customer!]!
+  customer(data: CustomerDataInput): CreatedCustomer!
+}
+
+type Mutation {
+  createCustomer(data: CustomerInput!): CreatedCustomer!
+}

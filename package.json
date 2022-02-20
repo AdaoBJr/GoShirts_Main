@@ -6,7 +6,7 @@
   "author": "PollyanaOliveira <pollyana.oliveir@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "npx nodemon --exec babel-node src/index.js -e js, gql"
+    "dev": "npx nodemon --exec babel-node src/index.js -e js,gql"
   },
   "dependencies": {
     "@graphql-tools/load-files": "^6.5.3",
