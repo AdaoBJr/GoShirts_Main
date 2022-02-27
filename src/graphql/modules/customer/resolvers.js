@@ -7,7 +7,7 @@ export default {
   Mutation: {
     createCustomer: async (_, { data }) => {
       customerDb.push(data);
-      return data;
+      return { customer: data };
     },
   },
 };
