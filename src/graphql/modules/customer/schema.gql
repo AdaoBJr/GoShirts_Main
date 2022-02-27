@@ -3,6 +3,10 @@ input CustomerDataInput {
   email: String!
 }
 
+input CustomerIdInput {
+  id: ID!
+}
+
 input CustomerInput {
   email: String!
   firstname: String!
@@ -35,6 +39,7 @@ type CreatedCustomer {
 
 type Query {
   customerList: [Customer!]!
+  customerById(data: CustomerIdInput!): CreatedCustomer!
   customer(data: CustomerDataInput): CreatedCustomer!
 }
 
