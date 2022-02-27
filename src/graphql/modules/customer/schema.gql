@@ -16,6 +16,7 @@ input CustomerInput {
 
 # RETURNS
 type Customer {
+  id: ID!
   email: String!
   firstname: String!
   lastname: String!
