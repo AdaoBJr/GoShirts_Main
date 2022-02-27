@@ -12,6 +12,10 @@ const useCustomer = () => {
     customer: await Customer.findOneAndUpdate(id, data, { new: true }),
   });
 
+  const DeleteCustomerById = async ({ id }) => ({
+    delete: !!(await Customer.findOneAndDelete(id)),
+  });
+
   const CreateCustomer = async ({ data }) => {
     const id = uuidV4();
     const customerData = { id, ...data };
@@ -19,7 +23,13 @@ const useCustomer = () => {
     return { customer };
   };
 
-  return { CustomerList, CustomerById, UpdateCustomerById, CreateCustomer };
+  return {
+    CustomerList,
+    CustomerById,
+    UpdateCustomerById,
+    DeleteCustomerById,
+    CreateCustomer,
+  };
 };
 
 export { useCustomer };
