@@ -46,6 +46,10 @@ type CreatedCustomer {
   customer: Customer!
 }
 
+type DeletedCustomer {
+  delete: Boolean!
+}
+
 # QUERIES / MUTATIONS
 
 type Query {
@@ -57,4 +61,5 @@ type Query {
 type Mutation {
   createCustomer(data: CustomerInput!): CreatedCustomer!
   updateCustomerById(hash: ID!, data: CustomerUpdateInput!): CreatedCustomer!
+  deleteCustomerById(hash: ID!): DeletedCustomer!
 }
