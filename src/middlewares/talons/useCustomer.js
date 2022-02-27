@@ -4,8 +4,12 @@ import { v4 as uuidV4 } from 'uuid';
 const useCustomer = () => {
   const CustomerList = async () => await Customer.find();
 
-  const CustomerById = async ({ data }) => ({
-    customer: await Customer.findOne({ id: data.id }).exec(),
+  const CustomerById = async ({ id }) => ({
+    customer: await Customer.findOne({ id }).exec(),
+  });
+
+  const UpdateCustomerById = async ({ id, data }) => ({
+    customer: await Customer.findOneAndUpdate(id, data, { new: true }),
   });
 
   const CreateCustomer = async ({ data }) => {
@@ -15,7 +19,7 @@ const useCustomer = () => {
     return { customer };
   };
 
-  return { CustomerList, CustomerById, CreateCustomer };
+  return { CustomerList, CustomerById, UpdateCustomerById, CreateCustomer };
 };
 
 export { useCustomer };
