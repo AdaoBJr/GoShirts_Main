@@ -1,12 +1,14 @@
 import { useCustomer } from '../../../middlewares/talons/useCustomer';
-const { CustomerList, CustomerById, CreateCustomer } = useCustomer();
+const { CustomerList, CustomerById, UpdateCustomerById, CreateCustomer } = useCustomer();
 
 export default {
   Query: {
     customerList: async () => await CustomerList(),
-    customerById: async (_, { data }) => await CustomerById({ data }),
+    customerById: async (_, { hash: id }) => await CustomerById({ id }),
   },
   Mutation: {
     createCustomer: async (_, { data }) => await CreateCustomer({ data }),
+    updateCustomerById: async (_, { hash: id, data }) =>
+      await UpdateCustomerById({ id, data }),
   },
 };
