@@ -1,6 +1,7 @@
 import Customer from '../../repositories/mongodb/models/customer';
 import { v4 as uuidV4 } from 'uuid';
-import { hash } from 'bcrypt';
+import { hash, compare } from 'bcrypt';
+import { generateToken } from '../utils/generateToken';
 
 const useCustomer = () => {
   const CustomerList = async () => await Customer.find();
@@ -27,12 +28,24 @@ const useCustomer = () => {
     return { customer };
   };
 
+  const SignInCustomer = async ({ data }) => {
+    const { email, password } = data;
+    const user = await Customer.findOne({ email }).exec();
+    if (!user) throw new Error('Email or password incorrect!');
+
+    const passwordMatch = await compare(password, user.password);
+    if (!passwordMatch) throw new Error('Email or password incorrect!');
+
+    return generateToken({ email });
+  };
+
   return {
     CustomerList,
     CustomerById,
     UpdateCustomerById,
     DeleteCustomerById,
     CreateCustomer,
+    SignInCustomer,
   };
 };
 
