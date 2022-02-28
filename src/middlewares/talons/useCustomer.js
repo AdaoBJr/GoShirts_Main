@@ -1,5 +1,6 @@
 import Customer from '../../repositories/mongodb/models/customer';
 import { v4 as uuidV4 } from 'uuid';
+import { hash } from 'bcrypt';
 
 const useCustomer = () => {
   const CustomerList = async () => await Customer.find();
@@ -18,6 +19,9 @@ const useCustomer = () => {
 
   const CreateCustomer = async ({ data }) => {
     const id = uuidV4();
+    const passwordHash = await hash(data.password, 8);
+    data.password = passwordHash;
+
     const customerData = { id, ...data };
     const customer = await Customer.create(customerData);
     return { customer };
