@@ -12,6 +12,7 @@
     "@graphql-tools/load-files": "^6.5.3",
     "@graphql-tools/merge": "^8.2.2",
     "apollo-server": "^3.6.3",
+    "bcrypt": "^5.0.1",
     "dotenv": "^16.0.0",
     "graphql": "^16.3.0",
     "mongoose": "^6.2.3",
