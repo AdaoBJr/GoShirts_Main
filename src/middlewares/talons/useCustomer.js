@@ -19,6 +19,9 @@ const useCustomer = () => {
   });
 
   const CreateCustomer = async ({ data }) => {
+    const user = await Customer.findOne({ email: data.email }).exec();
+    if (user) throw new Error('User already registered');
+
     const id = uuidV4();
     const passwordHash = await hash(data.password, 8);
     data.password = passwordHash;
