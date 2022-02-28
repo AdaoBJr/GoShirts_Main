@@ -7,6 +7,11 @@ input CustomerIdInput {
   id: ID!
 }
 
+input CustomerSignInInput {
+  email: String!
+  password: String!
+}
+
 input CustomerInput {
   email: String!
   firstname: String!
@@ -50,6 +55,10 @@ type DeletedCustomer {
   delete: Boolean!
 }
 
+type TokenCustomer {
+  token: String!
+}
+
 # QUERIES / MUTATIONS
 
 type Query {
@@ -62,4 +71,5 @@ type Mutation {
   createCustomer(data: CustomerInput!): CreatedCustomer!
   updateCustomerById(hash: ID!, data: CustomerUpdateInput!): CreatedCustomer!
   deleteCustomerById(hash: ID!): DeletedCustomer!
+  signInCustomer(data: CustomerSignInInput!): TokenCustomer!
 }
