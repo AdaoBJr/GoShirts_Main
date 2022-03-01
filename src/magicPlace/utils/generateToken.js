@@ -10,4 +10,4 @@ const generateToken = ({ id }) => ({
   token: sign({ data: { id } }, JWT_SECRET, jwtConfig),
 });
 
-export { generateToken };
+export default generateToken;
