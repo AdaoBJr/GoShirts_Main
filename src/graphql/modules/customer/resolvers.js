@@ -1,4 +1,4 @@
-import { useCustomer } from '../../../middlewares/talons/useCustomer';
+import { useCustomer } from '../../../magicPlace/talons/useCustomer';
 const {
   CustomerList,
   CustomerById,
