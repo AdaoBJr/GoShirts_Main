@@ -9,7 +9,7 @@ export default function startSever() {
 
   const app = new ApolloServer({
     schema,
-    context: (req) => req.headers || '',
+    context: ({ req }) => req.headers || '',
   });
 
   app.listen(PORT || 4000, () =>
