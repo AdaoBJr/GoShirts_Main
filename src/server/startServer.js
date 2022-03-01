@@ -2,11 +2,13 @@ import 'dotenv/config';
 import '../repositories/mongodb/connection';
 import { ApolloServer } from 'apollo-server';
 
-export default function startSever({ typeDefs, resolvers }) {
+import schema from '../magicPlace/middlewares';
+
+export default function startSever() {
   const { PORT } = process.env;
+
   const app = new ApolloServer({
-    typeDefs,
-    resolvers,
+    schema,
     context: (req) => req.headers || '',
   });
 
