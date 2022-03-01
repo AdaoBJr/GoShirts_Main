@@ -1,8 +1,8 @@
 import CustomerRepository from '../../repositories/mongodb/models/customer';
 import { v4 as uuidV4 } from 'uuid';
 import { hash, compare } from 'bcrypt';
-import { generateToken } from '../utils/generateToken';
-import { checkEmailExists } from '../utils/checkEmailExists';
+import { generateToken, checkEmailExists } from '../utils';
+import ApiError, { emailExists, emailOrPwdIncorrect } from '../errors';
 
 const useCustomer = () => {
   const CustomerList = async () => await CustomerRepository.find();
@@ -19,7 +19,7 @@ const useCustomer = () => {
 
   const CreateCustomer = async ({ data }) => {
     const user = await checkEmailExists({ email: data.email });
-    if (user) throw new Error('Email already registered');
+    if (user) ApiError(emailExists);
 
     const id = uuidV4();
     const passwordHash = await hash(data.password, 8);
@@ -33,10 +33,10 @@ const useCustomer = () => {
   const SignInCustomer = async ({ data }) => {
     const { email, password } = data;
     const user = await CustomerRepository.findOne({ email }).exec();
-    if (!user) throw new Error('Email or password incorrect!');
+    if (!user) ApiError(emailOrPwdIncorrect);
 
     const passwordMatch = await compare(password, user.password);
-    if (!passwordMatch) throw new Error('Email or password incorrect!');
+    if (!passwordMatch) ApiError(emailOrPwdIncorrect);
 
     return generateToken({ id: user.id });
   };
