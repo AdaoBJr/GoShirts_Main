@@ -7,7 +7,7 @@ const jwtConfig = {
 };
 
 const generateToken = ({ email }) => ({
-  token: sign({ data: email }, JWT_SECRET, jwtConfig),
+  token: sign({ data: { email } }, JWT_SECRET, jwtConfig),
 });
 
 export { generateToken };
