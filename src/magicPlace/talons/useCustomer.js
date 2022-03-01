@@ -7,14 +7,14 @@ import { checkEmailExists } from '../utils/checkEmailExists';
 const useCustomer = () => {
   const CustomerList = async () => await CustomerRepository.find();
 
+  const DeleteCustomer = async ({ email }) => ({
+    delete: !!(await CustomerRepository.findOneAndDelete(email)),
+  });
+
   const Customer = async ({ id }) => await CustomerRepository.findOne({ id }).exec();
 
   const UpdateCustomer = async ({ args: { id, data } }) => ({
     customer: await CustomerRepository.findOneAndUpdate(id, data, { new: true }),
-  });
-
-  const DeleteCustomer = async ({ id }) => ({
-    delete: !!(await CustomerRepository.findOneAndDelete(id)),
   });
 
   const CreateCustomer = async ({ data }) => {

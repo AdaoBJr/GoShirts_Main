@@ -16,7 +16,7 @@ export default {
   Mutation: {
     createCustomer: async (_, { data }) => await CreateCustomer({ data }),
     updateCustomer: async (_, args) => await UpdateCustomer({ args }),
-    deleteCustomer: async (_, { id }) => await DeleteCustomer({ id }),
+    deleteCustomer: async (_, { email }) => await DeleteCustomer({ email }),
     signInCustomer: async (_, { data }) => await SignInCustomer({ data }),
   },
 };
