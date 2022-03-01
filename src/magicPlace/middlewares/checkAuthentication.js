@@ -14,7 +14,7 @@ const isAuth = async (resolve, parent, args, context, info) => {
   if (!hasBearer) token = authHeader;
 
   const { data } = verify(token, JWT_SECRET);
-  const userExists = await CustomerRepository.findOne({ email: data.email }).exec();
+  const userExists = await CustomerRepository.findOne({ id: data.id }).exec();
   if (!userExists) throw new Error('Invalid token or unauthorized user.');
 
   Object.assign(args, data);
@@ -26,8 +26,7 @@ const checkAuthentication = {
     customer: isAuth,
   },
   Mutation: {
-    updateCustomerById: isAuth,
-    deleteCustomerByEmail: isAuth,
+    updateCustomer: isAuth,
   },
 };
 
