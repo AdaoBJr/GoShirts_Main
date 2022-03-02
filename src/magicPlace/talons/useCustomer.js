@@ -1,8 +1,11 @@
-import CustomerRepository from '../../repositories/mongodb/models/customer';
+import dayjs from 'dayjs';
 import { v4 as uuidV4 } from 'uuid';
 import { hash, compare } from 'bcrypt';
-import { generateToken, checkEmailExists } from '../utils';
+
 import ApiError, { emailExists, emailOrPwdIncorrect } from '../errors';
+import { generateToken, generateRefreshToken, checkEmailExists } from '../utils';
+import CustomerRepository from '../../repositories/mongodb/models/customer';
+import CustomerTokensRepository from '../../repositories/mongodb/models/customerTokens';
 
 const useCustomer = () => {
   const CustomerList = async () => await CustomerRepository.find();
@@ -10,6 +13,9 @@ const useCustomer = () => {
   const DeleteCustomer = async ({ email }) => ({
     delete: !!(await CustomerRepository.findOneAndDelete(email)),
   });
+
+  const CustomerTokens = async ({ id }) =>
+    await CustomerTokensRepository.find({ userId: id });
 
   const Customer = async ({ id }) => await CustomerRepository.findOne({ id }).exec();
 
@@ -38,12 +44,22 @@ const useCustomer = () => {
     const passwordMatch = await compare(password, user.password);
     if (!passwordMatch) ApiError(emailOrPwdIncorrect);
 
-    return generateToken({ id: user.id });
+    const token = generateToken({ id: user.id });
+    const refreshToken = generateRefreshToken({ id: user.id });
+
+    const customerRefreshToken = {
+      userId: user.id,
+      refreshToken,
+      refreshTokenExpires: dayjs().add(30, 'days').format('DD-MM-YYYY'),
+    };
+    await CustomerTokensRepository.create(customerRefreshToken);
+    return { token };
   };
 
   return {
     CustomerList,
     Customer,
+    CustomerTokens,
     UpdateCustomer,
     DeleteCustomer,
     CreateCustomer,
