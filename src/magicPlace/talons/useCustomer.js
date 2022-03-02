@@ -2,17 +2,32 @@ import dayjs from 'dayjs';
 import { v4 as uuidV4 } from 'uuid';
 import { hash, compare } from 'bcrypt';
 
-import ApiError, { emailExists, emailOrPwdIncorrect } from '../errors';
-import { generateToken, generateRefreshToken, checkEmailExists } from '../utils';
+import ApiError, {
+  emailExists,
+  emailOrPwdIncorrect,
+  userAlreadyRemoved,
+} from '../errors';
+import {
+  generateToken,
+  generateRefreshToken,
+  checkEmailExists,
+  checkTokenExists,
+} from '../utils';
 import CustomerRepository from '../../repositories/mongodb/models/customer';
 import CustomerTokensRepository from '../../repositories/mongodb/models/customerTokens';
 
 const useCustomer = () => {
   const CustomerList = async () => await CustomerRepository.find();
 
-  const DeleteCustomer = async ({ email }) => ({
-    delete: !!(await CustomerRepository.findOneAndDelete(email)),
-  });
+  const DeleteCustomer = async ({ email }) => {
+    const { id } = await checkEmailExists({ email });
+    const userToken = await checkTokenExists({ id });
+
+    if (!id) ApiError(userAlreadyRemoved);
+
+    if (userToken) await CustomerTokensRepository.deleteMany({ userId: id });
+    return { delete: !!(await CustomerRepository.findOneAndDelete(email)) };
+  };
 
   const CustomerTokens = async ({ id }) =>
     await CustomerTokensRepository.find({ userId: id });
