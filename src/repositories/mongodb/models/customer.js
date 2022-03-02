@@ -37,6 +37,10 @@ const Schema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  tokens: {
+    type: Array,
+    ref: 'CustomerTokensRepository',
+  },
 });
 
 const CustomerCollection = 'customers';
