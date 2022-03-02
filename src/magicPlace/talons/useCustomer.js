@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { v4 as uuidV4 } from 'uuid';
 import { hash, compare } from 'bcrypt';
 
@@ -11,8 +10,9 @@ import {
   generateToken,
   generateRefreshToken,
   checkEmailExists,
-  checkTokenExists,
+  decodeToken,
 } from '../utils';
+
 import CustomerRepository from '../../repositories/mongodb/models/customer';
 import CustomerTokensRepository from '../../repositories/mongodb/models/customerTokens';
 
@@ -20,23 +20,32 @@ const useCustomer = () => {
   const CustomerList = async () => await CustomerRepository.find();
 
   const DeleteCustomer = async ({ email }) => {
-    const { id } = await checkEmailExists({ email });
-    const userToken = await checkTokenExists({ id });
+    const user = await checkEmailExists({ email });
+    if (!user) ApiError(userAlreadyRemoved);
 
-    if (!id) ApiError(userAlreadyRemoved);
-
-    if (userToken) await CustomerTokensRepository.deleteMany({ userId: id });
     return { delete: !!(await CustomerRepository.findOneAndDelete(email)) };
   };
 
   const CustomerTokens = async ({ id }) =>
     await CustomerTokensRepository.find({ userId: id });
 
-  const Customer = async ({ id }) => await CustomerRepository.findOne({ id }).exec();
+  const Customer = async ({ token }) => {
+    const { id } = decodeToken({ token });
+    return {
+      token: generateRefreshToken({ token }),
+      customer: await CustomerRepository.findOne({ id }).exec(),
+    };
+  };
 
-  const UpdateCustomer = async ({ args: { id, data } }) => ({
-    customer: await CustomerRepository.findOneAndUpdate(id, data, { new: true }),
-  });
+  const UpdateCustomer = async ({ args: { token, data } }) => {
+    const { id } = decodeToken({ token });
+    const user = await checkEmailExists({ email: data.email });
+    if (user) ApiError(emailExists);
+    return {
+      token: generateRefreshToken({ token }),
+      customer: await CustomerRepository.findOneAndUpdate({ id }, data, { new: true }),
+    };
+  };
 
   const CreateCustomer = async ({ data }) => {
     const user = await checkEmailExists({ email: data.email });
@@ -53,22 +62,13 @@ const useCustomer = () => {
 
   const SignInCustomer = async ({ data }) => {
     const { email, password } = data;
-    const user = await CustomerRepository.findOne({ email }).exec();
-    if (!user) ApiError(emailOrPwdIncorrect);
+    const { id, password: userPwd } = await CustomerRepository.findOne({ email }).exec();
+    if (!id) ApiError(emailOrPwdIncorrect);
 
-    const passwordMatch = await compare(password, user.password);
+    const passwordMatch = await compare(password, userPwd);
     if (!passwordMatch) ApiError(emailOrPwdIncorrect);
 
-    const token = generateToken({ id: user.id });
-    const refreshToken = generateRefreshToken({ id: user.id });
-
-    const customerRefreshToken = {
-      userId: user.id,
-      refreshToken,
-      refreshTokenExpires: dayjs().add(30, 'days').format('DD-MM-YYYY'),
-    };
-    await CustomerTokensRepository.create(customerRefreshToken);
-    return { token };
+    return { token: generateToken({ id }) };
   };
 
   return {

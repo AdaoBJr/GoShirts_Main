@@ -3,9 +3,9 @@ const { JWT_SECRET_TOKEN } = process.env;
 
 const jwtConfig = {
   algorithm: 'HS256',
-  expiresIn: '1d',
+  expiresIn: '5m',
 };
 
-const generateToken = ({ id }) => sign({ data: { id } }, JWT_SECRET_TOKEN, jwtConfig);
+const generateToken = ({ id }) => sign({ id }, JWT_SECRET_TOKEN, jwtConfig);
 
 export default generateToken;

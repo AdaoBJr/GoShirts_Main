@@ -49,6 +49,7 @@ type Customer {
 }
 
 type CreatedCustomer {
+  token: String!
   customer: Customer!
 }
 
@@ -70,7 +71,7 @@ type CustomerTokens {
 
 type Query {
   customerList: [Customer!]!
-  customer: Customer!
+  customer: CreatedCustomer!
 }
 
 type Mutation {

@@ -1,8 +1,6 @@
-import { verify } from 'jsonwebtoken';
 import CustomerRepository from '../../repositories/mongodb/models/customer';
 import ApiError, { tokenInvalidOrUnath, tokenIsMissing } from '../errors';
-
-const { JWT_SECRET_TOKEN } = process.env;
+import { decodeToken } from '../utils';
 
 const isAuth = async (resolve, parent, args, context, info) => {
   const authHeader = context.authorization;
@@ -14,11 +12,12 @@ const isAuth = async (resolve, parent, args, context, info) => {
   if (hasBearer) [, token] = authHeader.split(' ');
   if (!hasBearer) token = authHeader;
 
-  const { data } = verify(token, JWT_SECRET_TOKEN);
-  const userExists = await CustomerRepository.findOne({ id: data.id }).exec();
+  const { id } = decodeToken({ token });
+
+  const userExists = await CustomerRepository.findOne({ id }).exec();
   if (!userExists) ApiError(tokenInvalidOrUnath);
 
-  Object.assign(args, data);
+  Object.assign(args, { token });
   return await resolve(parent, args, context, info);
 };
 
