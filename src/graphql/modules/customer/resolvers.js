@@ -2,6 +2,7 @@ import { useCustomer } from '../../../magicPlace/talons/useCustomer';
 const {
   CustomerList,
   Customer,
+  CustomerTokens,
   UpdateCustomer,
   DeleteCustomer,
   CreateCustomer,
@@ -9,6 +10,9 @@ const {
 } = useCustomer();
 
 export default {
+  Customer: {
+    tokens: async ({ id }) => await CustomerTokens({ id }),
+  },
   Query: {
     customerList: async () => await CustomerList(),
     customer: async (_, { id }) => await Customer({ id }),
