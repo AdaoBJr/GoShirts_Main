@@ -6,5 +6,6 @@ export const tokenInvalidOrUnath = {
   code: 401,
   msg: 'Invalid token or unauthorized user.',
 };
+export const expiredSession = { code: 401, msg: 'Expired session.' };
 
 export { default } from './ApiError';
