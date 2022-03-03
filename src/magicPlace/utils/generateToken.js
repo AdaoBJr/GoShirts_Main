@@ -1,11 +1,11 @@
 import { sign } from 'jsonwebtoken';
-const { JWT_SECRET_TOKEN } = process.env;
+const { JWT_SECRET } = process.env;
 
 const jwtConfig = {
   algorithm: 'HS256',
-  expiresIn: '5m',
+  expiresIn: '10m',
 };
 
-const generateToken = ({ id }) => sign({ id }, JWT_SECRET_TOKEN, jwtConfig);
+const generateToken = ({ id }) => sign({ id }, JWT_SECRET, jwtConfig);
 
 export default generateToken;
