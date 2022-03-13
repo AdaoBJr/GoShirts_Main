@@ -30,6 +30,7 @@ const checkAuthentication = {
   },
   Mutation: {
     updateCustomer: isAuth,
+    signOutCustomer: isAuth,
   },
 };
 
