@@ -62,13 +62,13 @@ const useCustomer = () => {
 
   const SignInCustomer = async ({ data }) => {
     const { email, password } = data;
-    const { id, password: userPwd } = await CustomerRepository.findOne({ email }).exec();
-    if (!id) ApiError(emailOrPwdIncorrect);
+    const user = await CustomerRepository.findOne({ email }).exec();
+    if (!user) ApiError(emailOrPwdIncorrect);
 
-    const passwordMatch = await compare(password, userPwd);
+    const passwordMatch = await compare(password, user.password);
     if (!passwordMatch) ApiError(emailOrPwdIncorrect);
 
-    return { token: generateToken({ id }) };
+    return { token: generateToken({ id: user.id }) };
   };
 
   return {
