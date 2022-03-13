@@ -61,6 +61,10 @@ type TokenCustomer {
   token: String!
 }
 
+type SignOutCustomer {
+  signOut: Boolean!
+}
+
 type CustomerTokens {
   userId: ID!
   token: String!
@@ -78,4 +82,5 @@ type Mutation {
   updateCustomer(data: CustomerUpdateInput!): CreatedCustomer!
   deleteCustomer(email: String!): DeletedCustomer!
   signInCustomer(data: CustomerSignInInput!): TokenCustomer!
+  signOutCustomer: SignOutCustomer!
 }
