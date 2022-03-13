@@ -64,6 +64,10 @@ const useCustomer = () => {
     return { token: generateToken({ id: user.id }) };
   };
 
+  const SignOutCustomer = async ({ args: { token } }) => ({
+    signOut: !!(await CustomerTokensRepository.findOneAndDelete(token)),
+  });
+
   return {
     CustomerList,
     Customer,
@@ -72,6 +76,7 @@ const useCustomer = () => {
     DeleteCustomer,
     CreateCustomer,
     SignInCustomer,
+    SignOutCustomer,
   };
 };
 
