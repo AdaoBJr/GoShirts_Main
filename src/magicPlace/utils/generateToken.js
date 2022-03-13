@@ -7,7 +7,7 @@ const jwtConfig = {
   expiresIn: '10m',
 };
 
-const generateToken = ({ id }) => {
+const generateToken = async ({ id }) => {
   const token = sign({ id }, JWT_SECRET, jwtConfig);
   const customerToken = { userId: id, token };
   await CustomerTokensRepository.create(customerToken);
