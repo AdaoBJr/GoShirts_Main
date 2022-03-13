@@ -22,6 +22,7 @@ const useCustomer = () => {
   const DeleteCustomer = async ({ email }) => {
     const user = await checkEmailExists({ email });
     if (!user) ApiError(userAlreadyRemoved);
+    await CustomerTokensRepository.deleteMany({ userId: user.id });
 
     return { delete: !!(await CustomerRepository.findOneAndDelete(email)) };
   };
