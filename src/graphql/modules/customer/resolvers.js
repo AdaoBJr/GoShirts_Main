@@ -15,7 +15,7 @@ export default {
   },
   Query: {
     customerList: async () => await CustomerList(),
-    customer: async (_, { token }) => await Customer({ token }),
+    customer: async (_, { id, token }) => await Customer({ id, token }),
   },
   Mutation: {
     createCustomer: async (_, { data }) => await CreateCustomer({ data }),
