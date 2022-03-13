@@ -6,11 +6,7 @@ const Schema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    refreshToken: {
-      type: String,
-      required: true,
-    },
-    refreshTokenExpires: {
+    token: {
       type: String,
       required: true,
     },

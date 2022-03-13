@@ -63,8 +63,7 @@ type TokenCustomer {
 
 type CustomerTokens {
   userId: ID!
-  refreshToken: String!
-  refreshTokenExpires: String!
+  token: String!
 }
 
 # QUERIES / MUTATIONS
