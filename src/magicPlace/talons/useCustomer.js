@@ -6,12 +6,7 @@ import ApiError, {
   emailOrPwdIncorrect,
   userAlreadyRemoved,
 } from '../errors';
-import {
-  generateToken,
-  generateRefreshToken,
-  checkEmailExists,
-  decodeToken,
-} from '../utils';
+import { generateToken, generateRefreshToken, checkEmailExists } from '../utils';
 
 import CustomerRepository from '../../repositories/mongodb/models/customer';
 import CustomerTokensRepository from '../../repositories/mongodb/models/customerTokens';
@@ -30,18 +25,15 @@ const useCustomer = () => {
   const CustomerTokens = async ({ id }) =>
     await CustomerTokensRepository.find({ userId: id });
 
-  const Customer = async ({ token }) => {
-    const { id } = decodeToken({ token });
-    return {
-      token: generateRefreshToken({ token }),
-      customer: await CustomerRepository.findOne({ id }).exec(),
-    };
-  };
+  const Customer = async ({ id, token }) => ({
+    token: generateRefreshToken({ token }),
+    customer: await CustomerRepository.findOne({ id }).exec(),
+  });
 
-  const UpdateCustomer = async ({ args: { token, data } }) => {
-    const { id } = decodeToken({ token });
-    const user = await checkEmailExists({ email: data.email });
-    if (user) ApiError(emailExists);
+  const UpdateCustomer = async ({ args: { id, token, data } }) => {
+    const userExists = await checkEmailExists({ email: data.email });
+    if (userExists) ApiError(emailExists);
+
     return {
       token: generateRefreshToken({ token }),
       customer: await CustomerRepository.findOneAndUpdate({ id }, data, { new: true }),
