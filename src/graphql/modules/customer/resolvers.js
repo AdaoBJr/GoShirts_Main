@@ -7,6 +7,7 @@ const {
   DeleteCustomer,
   CreateCustomer,
   SignInCustomer,
+  SignOutCustomer,
 } = useCustomer();
 
 export default {
@@ -22,5 +23,6 @@ export default {
     updateCustomer: async (_, args) => await UpdateCustomer({ args }),
     deleteCustomer: async (_, { email }) => await DeleteCustomer({ email }),
     signInCustomer: async (_, { data }) => await SignInCustomer({ data }),
+    signOutCustomer: async (_, args) => await SignOutCustomer({ args }),
   },
 };
