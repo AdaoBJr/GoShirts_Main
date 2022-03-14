@@ -37,6 +37,10 @@ const Schema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  address: {
+    type: Array,
+    ref: 'CustomerAdressRepository',
+  },
   tokens: {
     type: Array,
     ref: 'CustomerTokensRepository',
