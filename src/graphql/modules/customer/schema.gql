@@ -34,6 +34,18 @@ input CustomerUpdateInput {
   gender: Int
 }
 
+input CustomerAddressInput {
+  email: String!
+  rua: String!
+  bairro: String!
+  cidade: String!
+  CEP: String!
+  estado: String!
+  pais: String!
+  defaultShipping: Boolean!
+  defaultBilling: Boolean!
+}
+
 # RETURNS
 type Customer {
   id: ID!
@@ -45,12 +57,18 @@ type Customer {
   password: String!
   date_of_birth: String!
   gender: Int!
+  address: [CustomerAddress!]!
   tokens: [CustomerTokens!]!
 }
 
 type CreatedCustomer {
   token: String!
   customer: Customer!
+}
+
+type CreatedCustomerAddress {
+  token: String!
+  customer: CustomerAddress!
 }
 
 type DeletedCustomer {
@@ -63,6 +81,19 @@ type TokenCustomer {
 
 type SignOutCustomer {
   signOut: Boolean!
+}
+
+type CustomerAddress {
+  userId: ID!
+  email: String!
+  rua: String!
+  bairro: String!
+  cidade: String!
+  CEP: String!
+  estado: String!
+  pais: String!
+  defaultShipping: Boolean!
+  defaultBilling: Boolean!
 }
 
 type CustomerTokens {
@@ -83,4 +114,5 @@ type Mutation {
   deleteCustomer(email: String!): DeletedCustomer!
   signInCustomer(data: CustomerSignInInput!): TokenCustomer!
   signOutCustomer: SignOutCustomer!
+  createCustomerAddress(data: CustomerAddressInput!): CreatedCustomerAddress!
 }
