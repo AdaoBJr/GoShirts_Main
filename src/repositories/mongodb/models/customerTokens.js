@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
 const Schema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'customer',
+  },
   userId: {
     type: String,
     required: true,
@@ -11,6 +15,9 @@ const Schema = new mongoose.Schema({
   },
 });
 
-const CustomerTokensCollection = 'customerTokens';
-const CustomerTokensRepository = mongoose.model(CustomerTokensCollection, Schema);
+const CustomerTokensRepository = mongoose.model(
+  'customerToken',
+  Schema,
+  'customerTokens'
+);
 export default CustomerTokensRepository;

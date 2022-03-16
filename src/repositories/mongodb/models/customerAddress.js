@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
 const Schema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'customer',
+  },
   userId: {
     type: String,
     required: true,
@@ -39,6 +43,9 @@ const Schema = new mongoose.Schema({
   },
 });
 
-const CustomerAddressCollection = 'customerAddresses';
-const CustomerAddressRepository = mongoose.model(CustomerAddressCollection, Schema);
+const CustomerAddressRepository = mongoose.model(
+  'customerAddress',
+  Schema,
+  'customerAddresses'
+);
 export default CustomerAddressRepository;
