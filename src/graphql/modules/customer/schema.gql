@@ -35,7 +35,6 @@ input CustomerUpdateInput {
 }
 
 input CustomerAddressInput {
-  email: String!
   rua: String!
   bairro: String!
   cidade: String!
@@ -110,9 +109,9 @@ type Query {
 
 type Mutation {
   createCustomer(data: CustomerInput!): CreatedCustomer!
+  createCustomerAddress(data: CustomerAddressInput!): CreatedCustomerAddress!
   updateCustomer(data: CustomerUpdateInput!): CreatedCustomer!
   deleteCustomer(email: String!): DeletedCustomer!
   signInCustomer(data: CustomerSignInInput!): TokenCustomer!
   signOutCustomer: SignOutCustomer!
-  createCustomerAddress(data: CustomerAddressInput!): CreatedCustomerAddress!
 }
