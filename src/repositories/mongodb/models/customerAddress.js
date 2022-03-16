@@ -5,10 +5,6 @@ const Schema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  email: {
-    type: String,
-    required: true,
-  },
   rua: {
     type: String,
     required: true,
@@ -43,6 +39,6 @@ const Schema = new mongoose.Schema({
   },
 });
 
-const CustomerAddressCollection = 'addresses';
-const CustomerAdressRepository = mongoose.model(CustomerAddressCollection, Schema);
-export default CustomerAdressRepository;
+const CustomerAddressCollection = 'customerAddresses';
+const CustomerAddressRepository = mongoose.model(CustomerAddressCollection, Schema);
+export default CustomerAddressRepository;
