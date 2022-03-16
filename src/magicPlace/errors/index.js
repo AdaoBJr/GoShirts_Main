@@ -7,5 +7,6 @@ export const tokenInvalidOrUnath = {
   msg: 'Invalid token or unauthorized user.',
 };
 export const expiredSession = { code: 401, msg: 'Expired session.' };
+export const userDoesNotExist = { code: 401, msg: 'User does not exists.' };
 
 export { default } from './ApiError';
