@@ -5,11 +5,18 @@ import ApiError, {
   emailExists,
   emailOrPwdIncorrect,
   userAlreadyRemoved,
+  userDoesNotExist,
 } from '../errors';
-import { generateToken, generateRefreshToken, checkEmailExists } from '../utils';
+import {
+  generateToken,
+  generateRefreshToken,
+  checkEmailExists,
+  checkUserIdExists,
+} from '../utils';
 
 import CustomerRepository from '../../repositories/mongodb/models/customer';
 import CustomerTokensRepository from '../../repositories/mongodb/models/customerTokens';
+import CustomerAddressRepository from '../../repositories/mongodb/models/customerAddress';
 
 const useCustomer = () => {
   const CustomerList = async () => await CustomerRepository.find();
@@ -18,12 +25,16 @@ const useCustomer = () => {
     const user = await checkEmailExists({ email });
     if (!user) ApiError(userAlreadyRemoved);
     await CustomerTokensRepository.deleteMany({ userId: user.id });
+    await CustomerAddressRepository.deleteMany({ userId: user.id });
 
     return { delete: !!(await CustomerRepository.findOneAndDelete(email)) };
   };
 
-  const CustomerTokens = async ({ id }) =>
-    await CustomerTokensRepository.find({ userId: id });
+  const CustomerTokens = async ({ id: userId }) =>
+    await CustomerTokensRepository.find({ userId });
+
+  const CustomerAddress = async ({ id: userId }) =>
+    await CustomerAddressRepository.find({ userId });
 
   const Customer = async ({ id, token }) => ({
     token: generateRefreshToken({ token }),
@@ -31,6 +42,9 @@ const useCustomer = () => {
   });
 
   const UpdateCustomer = async ({ args: { id, token, data } }) => {
+    const user = await checkUserIdExists({ id });
+    if (!user) ApiError(userDoesNotExist);
+
     const userExists = await checkEmailExists({ email: data.email });
     if (userExists) ApiError(emailExists);
 
@@ -53,6 +67,17 @@ const useCustomer = () => {
     return { customer };
   };
 
+  const CreateCustomerAddress = async ({ args: { id, token, data } }) => {
+    const user = await checkUserIdExists({ id });
+    if (!user) ApiError(userDoesNotExist);
+
+    const customerData = { userId: id, ...data };
+    const customerAddress = await CustomerAddressRepository.create(customerData);
+    const newToken = generateRefreshToken({ token });
+
+    return { token: newToken, customer: customerAddress };
+  };
+
   const SignInCustomer = async ({ data }) => {
     const { email, password } = data;
     const user = await CustomerRepository.findOne({ email }).exec();
@@ -71,12 +96,14 @@ const useCustomer = () => {
   return {
     CustomerList,
     Customer,
+    CustomerAddress,
     CustomerTokens,
     UpdateCustomer,
     DeleteCustomer,
     CreateCustomer,
     SignInCustomer,
     SignOutCustomer,
+    CreateCustomerAddress,
   };
 };
 
