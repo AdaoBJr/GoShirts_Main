@@ -27,7 +27,7 @@ const useCustomer = () => {
     await CustomerTokensRepository.deleteMany({ userId: user.id });
     await CustomerAddressRepository.deleteMany({ userId: user.id });
 
-    return { delete: !!(await CustomerRepository.findOneAndDelete(email)) };
+    return { delete: !!(await CustomerRepository.findOneAndDelete({ email })) };
   };
 
   const CustomerTokens = async ({ id: userId }) =>
