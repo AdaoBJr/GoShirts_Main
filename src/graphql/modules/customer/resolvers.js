@@ -11,8 +11,12 @@ const {
   SignOutCustomer,
 } = useCustomer();
 
-const { CustomerAddress, CreateCustomerAddress, UpdateCustomerAddress } =
-  useCustomerAddress();
+const {
+  CustomerAddress,
+  CreateCustomerAddress,
+  UpdateCustomerAddress,
+  DeleteCustomerAddress,
+} = useCustomerAddress();
 
 export default {
   Customer: {
@@ -29,6 +33,7 @@ export default {
     updateCustomerAddress: async (_, args) => await UpdateCustomerAddress({ args }),
     updateCustomer: async (_, args) => await UpdateCustomer({ args }),
     deleteCustomer: async (_, { email }) => await DeleteCustomer({ email }),
+    deleteCustomerAddress: async (_, args) => await DeleteCustomerAddress({ args }),
     signInCustomer: async (_, { data }) => await SignInCustomer({ data }),
     signOutCustomer: async (_, args) => await SignOutCustomer({ args }),
   },
