@@ -1,6 +1,15 @@
 import CustomerAddressRepository from '../../../repositories/mongodb/models/customerAddress';
-import ApiError, { emailExists, userDoesNotExist } from '../../errors';
-import { checkEmailExists, checkUserIdExists, generateRefreshToken } from '../../utils';
+import ApiError, {
+  addressDoesNotExist,
+  emailExists,
+  userDoesNotExist,
+} from '../../errors';
+import {
+  checkAddressExists,
+  checkEmailExists,
+  checkUserIdExists,
+  generateRefreshToken,
+} from '../../utils';
 
 const useCustomerAddress = () => {
   const CustomerAddress = async ({ id: userId }) =>
@@ -32,10 +41,21 @@ const useCustomerAddress = () => {
     };
   };
 
+  const DeleteCustomerAddress = async ({ args: { id: userId, ID: _id } }) => {
+    const user = await checkUserIdExists({ id: userId });
+    if (!user) ApiError(userDoesNotExist);
+
+    const address = await checkAddressExists({ _id });
+    if (!address) ApiError(addressDoesNotExist);
+
+    return { delete: !!(await CustomerAddressRepository.findOneAndDelete({ _id })) };
+  };
+
   return {
     CustomerAddress,
     CreateCustomerAddress,
     UpdateCustomerAddress,
+    DeleteCustomerAddress,
   };
 };
 
