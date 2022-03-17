@@ -1,4 +1,4 @@
-import CustomerRepository from '../../repositories/mongodb/models/customer';
+import { CustomerRepository } from '../../repositories/mongodb/models/customer';
 
 const checkUserIdExists = async ({ id }) =>
   await CustomerRepository.findOne({ id }).exec();

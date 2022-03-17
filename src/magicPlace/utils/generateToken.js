@@ -1,6 +1,6 @@
 import { sign } from 'jsonwebtoken';
 const { JWT_SECRET } = process.env;
-import CustomerTokensRepository from '../../repositories/mongodb/models/customerTokens';
+import { CustomerTokensRepository } from '../../repositories/mongodb/models/customer';
 
 const jwtConfig = {
   algorithm: 'HS256',

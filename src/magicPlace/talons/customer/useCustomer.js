@@ -14,9 +14,11 @@ import {
   checkUserIdExists,
 } from '../../utils';
 
-import CustomerRepository from '../../../repositories/mongodb/models/customer';
-import CustomerTokensRepository from '../../../repositories/mongodb/models/customerTokens';
-import CustomerAddressRepository from '../../../repositories/mongodb/models/customerAddress';
+import {
+  CustomerRepository,
+  CustomerTokensRepository,
+  CustomerAddressRepository,
+} from '../../../repositories/mongodb/models/customer';
 
 const useCustomer = () => {
   const CustomerList = async () => await CustomerRepository.find();

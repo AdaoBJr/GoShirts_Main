@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { sign } from 'jsonwebtoken';
 import { decodeToken } from '.';
-import CustomerTokensRepository from '../../repositories/mongodb/models/customerTokens';
+import { CustomerTokensRepository } from '../../repositories/mongodb/models/customer';
 import ApiError, { expiredSession } from '../errors';
 
 const { JWT_SECRET } = process.env;

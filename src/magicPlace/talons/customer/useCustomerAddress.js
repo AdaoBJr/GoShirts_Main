@@ -1,9 +1,11 @@
-import CustomerAddressRepository from '../../../repositories/mongodb/models/customerAddress';
+import { CustomerAddressRepository } from '../../../repositories/mongodb/models/customer';
+
 import ApiError, {
   addressDoesNotExist,
   emailExists,
   userDoesNotExist,
 } from '../../errors';
+
 import {
   checkAddressExists,
   checkEmailExists,

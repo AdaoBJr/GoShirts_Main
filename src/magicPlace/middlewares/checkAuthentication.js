@@ -1,4 +1,4 @@
-import CustomerRepository from '../../repositories/mongodb/models/customer';
+import { CustomerRepository } from '../../repositories/mongodb/models/customer';
 import ApiError, { tokenInvalidOrUnath, tokenIsMissing } from '../errors';
 import { checkTokenExists, decodeToken } from '../utils';
 

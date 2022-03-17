@@ -1,4 +1,4 @@
-import CustomerAddressRepository from '../../repositories/mongodb/models/customerAddress';
+import { CustomerAddressRepository } from '../../repositories/mongodb/models/customer';
 
 const checkAddressExists = async ({ _id }) =>
   await CustomerAddressRepository.findOne({ _id }).exec();
