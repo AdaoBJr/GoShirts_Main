@@ -1,6 +1,6 @@
 import CustomerAddressRepository from '../../../repositories/mongodb/models/customerAddress';
-import ApiError, { userDoesNotExist } from '../../errors';
-import { checkUserIdExists, generateRefreshToken } from '../../utils';
+import ApiError, { emailExists, userDoesNotExist } from '../../errors';
+import { checkEmailExists, checkUserIdExists, generateRefreshToken } from '../../utils';
 
 const useCustomerAddress = () => {
   const CustomerAddress = async ({ id: userId }) =>
@@ -16,9 +16,26 @@ const useCustomerAddress = () => {
 
     return { token: newToken, customer: customerAddress };
   };
+
+  const UpdateCustomerAddress = async ({ args: { id, token, data } }) => {
+    const user = await checkUserIdExists({ id });
+    if (!user) ApiError(userDoesNotExist);
+
+    const userExists = await checkEmailExists({ email: data.email });
+    if (userExists) ApiError(emailExists);
+
+    return {
+      token: generateRefreshToken({ token }),
+      customer: await CustomerAddressRepository.findOneAndUpdate({ id }, data, {
+        new: true,
+      }),
+    };
+  };
+
   return {
     CustomerAddress,
     CreateCustomerAddress,
+    UpdateCustomerAddress,
   };
 };
 
