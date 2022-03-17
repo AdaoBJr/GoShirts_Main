@@ -61,4 +61,4 @@ const useCustomerAddress = () => {
   };
 };
 
-export { useCustomerAddress };
+export default useCustomerAddress;

@@ -93,4 +93,4 @@ const useCustomer = () => {
   };
 };
 
-export { useCustomer };
+export default useCustomer;
