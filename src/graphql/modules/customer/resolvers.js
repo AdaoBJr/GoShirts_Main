@@ -1,17 +1,17 @@
-import { useCustomer } from '../../../magicPlace/talons/useCustomer';
+import { useCustomer, useCustomerAddress } from '../../../magicPlace/talons/customer';
+
 const {
   CustomerList,
   Customer,
-  CustomerAddress,
   CustomerTokens,
   UpdateCustomer,
   DeleteCustomer,
   CreateCustomer,
   SignInCustomer,
   SignOutCustomer,
-  CreateCustomerAddress,
 } = useCustomer();
 
+const { CustomerAddress, CreateCustomerAddress } = useCustomerAddress();
 export default {
   Customer: {
     tokens: async ({ id }) => await CustomerTokens({ id }),

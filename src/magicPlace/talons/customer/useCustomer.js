@@ -6,17 +6,17 @@ import ApiError, {
   emailOrPwdIncorrect,
   userAlreadyRemoved,
   userDoesNotExist,
-} from '../errors';
+} from '../../errors';
 import {
   generateToken,
   generateRefreshToken,
   checkEmailExists,
   checkUserIdExists,
-} from '../utils';
+} from '../../utils';
 
-import CustomerRepository from '../../repositories/mongodb/models/customer';
-import CustomerTokensRepository from '../../repositories/mongodb/models/customerTokens';
-import CustomerAddressRepository from '../../repositories/mongodb/models/customerAddress';
+import CustomerRepository from '../../../repositories/mongodb/models/customer';
+import CustomerTokensRepository from '../../../repositories/mongodb/models/customerTokens';
+import CustomerAddressRepository from '../../../repositories/mongodb/models/customerAddress';
 
 const useCustomer = () => {
   const CustomerList = async () => await CustomerRepository.find();
@@ -32,9 +32,6 @@ const useCustomer = () => {
 
   const CustomerTokens = async ({ id: userId }) =>
     await CustomerTokensRepository.find({ userId });
-
-  const CustomerAddress = async ({ id: userId }) =>
-    await CustomerAddressRepository.find({ userId });
 
   const Customer = async ({ id, token }) => ({
     token: generateRefreshToken({ token }),
@@ -67,17 +64,6 @@ const useCustomer = () => {
     return { customer };
   };
 
-  const CreateCustomerAddress = async ({ args: { id, token, data } }) => {
-    const user = await checkUserIdExists({ id });
-    if (!user) ApiError(userDoesNotExist);
-
-    const customerData = { userId: id, ...data };
-    const customerAddress = await CustomerAddressRepository.create(customerData);
-    const newToken = generateRefreshToken({ token });
-
-    return { token: newToken, customer: customerAddress };
-  };
-
   const SignInCustomer = async ({ data }) => {
     const { email, password } = data;
     const user = await CustomerRepository.findOne({ email }).exec();
@@ -96,14 +82,12 @@ const useCustomer = () => {
   return {
     CustomerList,
     Customer,
-    CustomerAddress,
     CustomerTokens,
     UpdateCustomer,
     DeleteCustomer,
     CreateCustomer,
     SignInCustomer,
     SignOutCustomer,
-    CreateCustomerAddress,
   };
 };
 
