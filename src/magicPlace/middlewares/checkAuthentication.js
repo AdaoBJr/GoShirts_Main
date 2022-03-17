@@ -32,6 +32,7 @@ const checkAuthentication = {
     updateCustomer: isAuth,
     createCustomerAddress: isAuth,
     updateCustomerAddress: isAuth,
+    deleteCustomerAddress: isAuth,
     signOutCustomer: isAuth,
   },
 };
