@@ -45,6 +45,17 @@ input CustomerAddressInput {
   defaultBilling: Boolean!
 }
 
+input CustomerAddressUpdateInput {
+  rua: String
+  bairro: String
+  cidade: String
+  CEP: String
+  estado: String
+  pais: String
+  defaultShipping: Boolean
+  defaultBilling: Boolean
+}
+
 # RETURNS
 type Customer {
   id: ID!
@@ -110,6 +121,7 @@ type Query {
 type Mutation {
   createCustomer(data: CustomerInput!): CreatedCustomer!
   createCustomerAddress(data: CustomerAddressInput!): CreatedCustomerAddress!
+  updateCustomerAddress(data: CustomerAddressUpdateInput!): CreatedCustomerAddress!
   updateCustomer(data: CustomerUpdateInput!): CreatedCustomer!
   deleteCustomer(email: String!): DeletedCustomer!
   signInCustomer(data: CustomerSignInInput!): TokenCustomer!
