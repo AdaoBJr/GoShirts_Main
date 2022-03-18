@@ -27,6 +27,7 @@ const isAuth = async (resolve, parent, args, context, info) => {
 const checkAuthentication = {
   Query: {
     customer: isAuth,
+    productList: isAuth,
   },
   Mutation: {
     updateCustomer: isAuth,
@@ -34,6 +35,7 @@ const checkAuthentication = {
     updateCustomerAddress: isAuth,
     deleteCustomerAddress: isAuth,
     signOutCustomer: isAuth,
+    createProduct: isAuth,
   },
 };
 
