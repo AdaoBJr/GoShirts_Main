@@ -26,6 +26,12 @@ const Schema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    creatorId: {
+      type: String,
+    },
+    updatorId: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

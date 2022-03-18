@@ -18,12 +18,12 @@ const useProduct = () => {
     },
   });
 
-  const CreateProduct = async ({ args: { token, data } }) => {
+  const CreateProduct = async ({ args: { id: creatorId, token, data } }) => {
     const product = await checkProductExists({ sku: data.sku });
     if (product) ApiError(productExists);
 
     const id = uuidV4();
-    Object.assign(data, { id });
+    Object.assign(data, { id, creatorId });
 
     return {
       token: generateRefreshToken({ token }),
