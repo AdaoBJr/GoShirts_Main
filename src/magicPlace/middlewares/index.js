@@ -1,9 +1,9 @@
 import { applyMiddleware } from 'graphql-middleware';
 
 import makeSchema from '../../graphql';
-import { checkAuthentication } from './checkAuthentication';
+import checkAuth from './checkAuth';
 
-const middleware = [checkAuthentication];
+const middleware = [checkAuth];
 
 const schema = applyMiddleware(makeSchema, ...middleware);
 

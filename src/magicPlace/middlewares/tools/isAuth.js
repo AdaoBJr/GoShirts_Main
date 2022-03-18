@@ -1,6 +1,6 @@
-import { CustomerRepository } from '../../repositories/mongodb/models/customer';
-import ApiError, { tokenInvalidOrUnath, tokenIsMissing } from '../errors';
-import { checkTokenExists, decodeToken } from '../utils';
+import { CustomerRepository } from '../../../repositories/mongodb/models/customer';
+import ApiError, { tokenInvalidOrUnath, tokenIsMissing } from '../../errors';
+import { checkTokenExists, decodeToken } from '../../utils';
 
 const isAuth = async (resolve, parent, args, context, info) => {
   const authHeader = context.authorization;
@@ -24,19 +24,4 @@ const isAuth = async (resolve, parent, args, context, info) => {
   return await resolve(parent, args, context, info);
 };
 
-const checkAuthentication = {
-  Query: {
-    customer: isAuth,
-    productList: isAuth,
-  },
-  Mutation: {
-    updateCustomer: isAuth,
-    createCustomerAddress: isAuth,
-    updateCustomerAddress: isAuth,
-    deleteCustomerAddress: isAuth,
-    signOutCustomer: isAuth,
-    createProduct: isAuth,
-  },
-};
-
-export { checkAuthentication };
+export default isAuth;
