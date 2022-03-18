@@ -1,23 +1,10 @@
 import { useProduct } from '../../../magicPlace/talons/product';
 
-const { ProductList, CreateProduct } = useProduct();
+const { ProductList, PriceRange, CreateProduct } = useProduct();
 
 export default {
   Product: {
-    priceRange: async (parent) => {
-      const { maxPrice, minPrice, currency } = parent;
-      const priceRange = {
-        minPrice: {
-          value: minPrice,
-          currency,
-        },
-        maxPrice: {
-          value: maxPrice,
-          currency,
-        },
-      };
-      return priceRange;
-    },
+    priceRange: (parent) => PriceRange({ parent }),
   },
   Query: {
     productList: async () => await ProductList(),
