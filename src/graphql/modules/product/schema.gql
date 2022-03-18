@@ -1,0 +1,43 @@
+# INPUTS
+input ProductInput {
+  sku: String!
+  name: String!
+  description: String!
+  minPrice: Int!
+  maxPrice: Int!
+  currency: String!
+}
+
+# BASE SCHEMAS
+type PriceValue {
+  value: Int!
+  currency: String!
+}
+
+type PriceRange {
+  minPrice: PriceValue
+  maxPrice: PriceValue
+}
+
+type Product {
+  sku: String!
+  name: String!
+  description: String!
+  priceRange: PriceRange!
+}
+
+# RETURNS
+type CreatedProduct {
+  token: String!
+  products: Product!
+}
+
+# QUERIES / MUTATIONS
+
+type Query {
+  productList: [Product!]!
+}
+
+type Mutation {
+  createProduct(data: ProductInput!): CreatedProduct!
+}
