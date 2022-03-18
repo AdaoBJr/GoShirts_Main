@@ -11,7 +11,7 @@ const jwtConfig = {
   expiresIn: '30m',
 };
 
-const BREAK_POINT = 60;
+const BREAK_POINT = 60 * 5;
 
 const generateRefreshToken = async ({ token }) => {
   const { id, exp } = decodeToken({ token });
