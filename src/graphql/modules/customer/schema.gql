@@ -99,7 +99,7 @@ type CustomerTokens {
 type Wishlist {
   sku: String!
   quantity: Int!
-  fail: String
+  error: String
 }
 
 # RETURNS
