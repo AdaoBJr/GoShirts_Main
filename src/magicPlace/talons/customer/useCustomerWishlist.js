@@ -1,6 +1,11 @@
 import { CustomerWishlistRepository } from '../../../repositories/mongodb/models/customer';
-import ApiError, { unexpectedError, userDoesNotExist } from '../../errors';
+import ApiError, {
+  unexpectedError,
+  userDoesNotExist,
+  wishlistDoesNotExistsOrIsEmpty,
+} from '../../errors';
 import {
+  checkAddProductWishlist,
   checkProductExistsByData,
   checkUserIdExists,
   checkWishlistExist,
@@ -12,29 +17,37 @@ const useCustomerWishlist = () => {
     const user = await checkUserIdExists({ userId });
     if (!user) ApiError(userDoesNotExist);
 
-    const wishlistExists = await checkWishlistExist({ userId });
-    const checked = await checkProductExistsByData({ data });
-    const wishlist = checked.filter((item) => !item.error);
+    const wishDB = await checkWishlistExist({ userId });
+    const { wishChecked, wishData } = await checkProductExistsByData({ data });
+    const wishlist = checkAddProductWishlist({ wishDB, wishData });
 
     const customerWishlist = { userId, wishlist };
 
-    if (wishlistExists)
+    if (wishDB)
       await CustomerWishlistRepository.findOneAndUpdate({ userId }, customerWishlist, {
         new: true,
       });
 
-    if (!wishlistExists) {
+    if (!wishDB) {
       const created = await CustomerWishlistRepository.create(customerWishlist);
-      if (!created) return ApiError(unexpectedError);
+      if (!created) ApiError(unexpectedError);
     }
 
     return {
       token: generateRefreshToken({ token }),
-      wishlist: checked,
+      wishlist: wishChecked,
     };
   };
 
-  return { AddProductsToWishlist };
+  const RemoveProductsToWishlist = async ({ args: { id: userId, token, data } }) => {
+    const user = await checkUserIdExists({ userId });
+    if (!user) ApiError(userDoesNotExist);
+
+    const wishlistExists = await checkWishlistExist({ userId });
+    if (!wishlistExists) ApiError(wishlistDoesNotExistsOrIsEmpty);
+  };
+
+  return { AddProductsToWishlist, RemoveProductsToWishlist };
 };
 
 export default useCustomerWishlist;
