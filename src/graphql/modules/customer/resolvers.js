@@ -22,7 +22,7 @@ const {
   DeleteCustomerAddress,
 } = useCustomerAddress();
 
-const { AddProductsToWishlist } = useCustomerWishlist();
+const { AddProductsToWishlist, RemoveProductsToWishlist } = useCustomerWishlist();
 
 export default {
   Customer: {
@@ -43,5 +43,6 @@ export default {
     signInCustomer: async (_, { data }) => await SignInCustomer({ data }),
     signOutCustomer: async (_, args) => await SignOutCustomer({ args }),
     addProductsToWishlist: async (_, args) => AddProductsToWishlist({ args }),
+    removeProductsToWishlist: async (_, args) => RemoveProductsToWishlist({ args }),
   },
 };
