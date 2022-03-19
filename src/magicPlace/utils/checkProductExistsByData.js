@@ -6,10 +6,10 @@ const checkProductExistsByData = async ({ data }) => {
     data.map(async ({ sku, quantity }) => ({
       sku,
       quantity,
-      fail: !(await ProductRepository.findOne({ sku }).exec()) && error.msg,
+      error: !(await ProductRepository.findOne({ sku }).exec()) && error.msg,
     }))
   );
-  for (const i in checked) if (checked[i].fail !== error.msg) delete checked[i].fail;
+  for (const i in checked) if (checked[i].error !== error.msg) delete checked[i].error;
   return checked;
 };
 
