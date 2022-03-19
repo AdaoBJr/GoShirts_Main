@@ -2,7 +2,7 @@ import { v4 as uuidV4 } from 'uuid';
 
 import { ProductRepository } from '../../../repositories/mongodb/models/products';
 import ApiError, { productExists } from '../../errors';
-import { checkProductExists, generateRefreshToken } from '../../utils';
+import { checkProductExistsBySku, generateRefreshToken } from '../../utils';
 
 const useProduct = () => {
   const ProductList = async () => await ProductRepository.find();
@@ -19,7 +19,7 @@ const useProduct = () => {
   });
 
   const CreateProduct = async ({ args: { id: creatorId, token, data } }) => {
-    const product = await checkProductExists({ sku: data.sku });
+    const product = await checkProductExistsBySku({ sku: data.sku });
     if (product) ApiError(productExists);
 
     const id = uuidV4();
