@@ -13,6 +13,7 @@ const checkAuth = {
     signOutCustomer: isAuth,
     createProduct: isAuth,
     addProductsToWishlist: isAuth,
+    removeProductsToWishlist: isAuth,
   },
 };
 
