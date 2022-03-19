@@ -126,6 +126,11 @@ type CreatedWishlist {
   wishlist: [Wishlist!]!
 }
 
+type RemovedWishlist {
+  token: String!
+  wishlist: [Wishlist!]!
+}
+
 type SignOutCustomer {
   signOut: Boolean!
 }
@@ -147,4 +152,5 @@ type Mutation {
   signInCustomer(data: CustomerSignInInput!): CreatedTokenCustomer!
   signOutCustomer: SignOutCustomer!
   addProductsToWishlist(data: [CustomerWishlist!]!): CreatedWishlist!
+  removeProductsToWishlist(data: [CustomerWishlist!]!): RemovedWishlist!
 }
