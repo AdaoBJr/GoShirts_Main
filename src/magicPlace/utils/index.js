@@ -4,7 +4,8 @@ import checkEmailExists from './checkEmailExists';
 import checkTokenExists from './checkTokenExists';
 import checkUserIdExists from './checkUserIdExists';
 import checkAddressExists from './checkAddressExists';
-import checkProductExists from './checkProductExists';
+import checkProductExistsBySku from './checkProductExistsBySku';
+import checkProductExistsByData from './checkProductExistsByData';
 import decodeToken from './decodeToken';
 
 export {
@@ -14,6 +15,7 @@ export {
   checkTokenExists,
   checkUserIdExists,
   checkAddressExists,
-  checkProductExists,
+  checkProductExistsBySku,
+  checkProductExistsByData,
   decodeToken,
 };
