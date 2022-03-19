@@ -10,5 +10,6 @@ export const expiredSession = { code: 401, msg: 'Expired session.' };
 export const userDoesNotExist = { code: 401, msg: 'User does not exists.' };
 export const addressDoesNotExist = { code: 401, msg: 'Address does not exists.' };
 export const productExists = { code: 409, msg: 'Product already registered.' };
+export const productDoesNotExists = { code: 401, msg: 'Product does not exists.' };
 
 export { default } from './ApiError';
