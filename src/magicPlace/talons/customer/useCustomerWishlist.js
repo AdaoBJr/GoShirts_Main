@@ -13,8 +13,10 @@ const useCustomerWishlist = () => {
     if (!user) ApiError(userDoesNotExist);
 
     const wishlistExists = await checkWishlistExist({ userId });
+    const checked = await checkProductExistsByData({ data });
+    const wishlist = checked.filter((item) => !item.error);
 
-    const customerWishlist = { userId, wishlist: data };
+    const customerWishlist = { userId, wishlist };
 
     if (wishlistExists)
       await CustomerWishlistRepository.findOneAndUpdate({ userId }, customerWishlist, {
@@ -23,12 +25,12 @@ const useCustomerWishlist = () => {
 
     if (!wishlistExists) {
       const created = await CustomerWishlistRepository.create(customerWishlist);
-      if (!created) ApiError(unexpectedError);
+      if (!created) return ApiError(unexpectedError);
     }
 
     return {
       token: generateRefreshToken({ token }),
-      wishlist: await checkProductExistsByData({ data }),
+      wishlist: checked,
     };
   };
 
