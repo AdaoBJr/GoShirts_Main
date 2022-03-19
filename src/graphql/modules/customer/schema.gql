@@ -73,6 +73,7 @@ type Customer {
   date_of_birth: String!
   gender: Int!
   address: [CustomerAddress!]!
+  wishlist: [Wishlist!]!
   tokens: [CustomerTokens!]!
 }
 
