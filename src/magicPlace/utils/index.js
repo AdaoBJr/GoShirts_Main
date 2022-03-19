@@ -7,6 +7,7 @@ import checkAddressExists from './checkAddressExists';
 import checkProductExistsBySku from './checkProductExistsBySku';
 import checkProductExistsByData from './checkProductExistsByData';
 import checkWishlistExist from './checkWishlistExist';
+import checkAddProductWishlist from './checkAddProductWishlist';
 import decodeToken from './decodeToken';
 
 export {
@@ -19,5 +20,6 @@ export {
   checkProductExistsBySku,
   checkProductExistsByData,
   checkWishlistExist,
+  checkAddProductWishlist,
   decodeToken,
 };
