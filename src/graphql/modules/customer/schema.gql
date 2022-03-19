@@ -56,7 +56,12 @@ input CustomerAddressUpdateInput {
   defaultBilling: Boolean
 }
 
-# RETURNS
+input CustomerWishlist {
+  sku: String!
+  quantity: Int!
+}
+
+# BASE SCHEMAS
 type Customer {
   id: ID!
   email: String!
@@ -69,28 +74,6 @@ type Customer {
   gender: Int!
   address: [CustomerAddress!]!
   tokens: [CustomerTokens!]!
-}
-
-type CreatedCustomer {
-  token: String!
-  customer: Customer!
-}
-
-type CreatedCustomerAddress {
-  token: String!
-  customer: CustomerAddress!
-}
-
-type DeletedCustomer {
-  delete: Boolean!
-}
-
-type TokenCustomer {
-  token: String!
-}
-
-type SignOutCustomer {
-  signOut: Boolean!
 }
 
 type CustomerAddress {
@@ -112,6 +95,39 @@ type CustomerTokens {
   token: String!
 }
 
+type Wishlist {
+  sku: String!
+  quantity: Int!
+}
+
+# RETURNS
+type CreatedCustomer {
+  token: String!
+  customer: Customer!
+}
+
+type CreatedCustomerAddress {
+  token: String!
+  customer: CustomerAddress!
+}
+
+type DeletedCustomer {
+  delete: Boolean!
+}
+
+type CreatedTokenCustomer {
+  token: String!
+}
+
+type CreatedWishlist {
+  token: String!
+  wishlist: [Wishlist!]!
+}
+
+type SignOutCustomer {
+  signOut: Boolean!
+}
+
 # QUERIES / MUTATIONS
 
 type Query {
@@ -126,6 +142,7 @@ type Mutation {
   updateCustomer(data: CustomerUpdateInput!): CreatedCustomer!
   deleteCustomer(email: String!): DeletedCustomer!
   deleteCustomerAddress(ID: ID!): DeletedCustomer!
-  signInCustomer(data: CustomerSignInInput!): TokenCustomer!
+  signInCustomer(data: CustomerSignInInput!): CreatedTokenCustomer!
   signOutCustomer: SignOutCustomer!
+  addProductsToWishlist(data: [CustomerWishlist!]!): CreatedWishlist!
 }
