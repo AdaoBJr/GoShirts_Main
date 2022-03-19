@@ -12,5 +12,9 @@ export const userDoesNotExist = { code: 401, msg: 'User does not exists.' };
 export const addressDoesNotExist = { code: 401, msg: 'Address does not exists.' };
 export const productExists = { code: 409, msg: 'Product already registered.' };
 export const productDoesNotExists = { code: 401, msg: 'Product does not exists.' };
+export const wishlistDoesNotExistsOrIsEmpty = {
+  code: 401,
+  msg: 'Wishlist does not exists or is empty.',
+};
 
 export { default } from './ApiError';
