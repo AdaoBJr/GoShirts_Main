@@ -1,6 +1,4 @@
-import { productDoesNotExists as error } from '../errors';
-
-const checkRemProductWishlist = ({ wishDB, wishData }) => {
+const decreaseProductWishlist = ({ wishDB, wishData }) => {
   const newWishDB = [...wishDB.wishlist];
   wishData.forEach((data) => {
     const product = newWishDB.find((db) => db.sku === data.sku);
@@ -13,4 +11,4 @@ const checkRemProductWishlist = ({ wishDB, wishData }) => {
   return newWishDB.filter((item) => item.quantity !== 0);
 };
 
-export default checkRemProductWishlist;
+export default decreaseProductWishlist;

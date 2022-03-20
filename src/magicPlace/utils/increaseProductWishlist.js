@@ -1,4 +1,4 @@
-const checkAddProductWishlist = ({ wishDB, wishData }) => {
+const increaseProductWishlist = ({ wishDB, wishData }) => {
   if (!wishDB) return wishData;
 
   const newWishDB = [...wishDB.wishlist];
@@ -10,4 +10,4 @@ const checkAddProductWishlist = ({ wishDB, wishData }) => {
   return newWishDB;
 };
 
-export default checkAddProductWishlist;
+export default increaseProductWishlist;

@@ -5,9 +5,9 @@ import ApiError, {
   wishlistDoesNotExistsOrIsEmpty,
 } from '../../errors';
 import {
-  checkAddProductWishlist,
-  checkProductExistsByData,
-  checkRemProductWishlist,
+  increaseProductWishlist,
+  checkProductOnRepos,
+  decreaseProductWishlist,
   checkUserIdExists,
   checkWishlistExist,
   generateRefreshToken,
@@ -19,8 +19,8 @@ const useCustomerWishlist = () => {
     if (!user) ApiError(userDoesNotExist);
 
     const wishDB = await checkWishlistExist({ userId });
-    const { wishChecked, wishData } = await checkProductExistsByData({ data });
-    const wishlist = checkAddProductWishlist({ wishDB, wishData });
+    const { wishChecked, wishData } = await checkProductOnRepos({ data });
+    const wishlist = increaseProductWishlist({ wishDB, wishData });
 
     const customerWishlist = { userId, wishlist };
 
@@ -47,12 +47,12 @@ const useCustomerWishlist = () => {
     const wishDB = await checkWishlistExist({ userId });
     if (!wishDB) ApiError(wishlistDoesNotExistsOrIsEmpty);
 
-    const { wishChecked, wishData } = await checkProductExistsByData({
+    const { wishChecked, wishData } = await checkProductOnRepos({
       userId,
       data,
       decrease: true,
     });
-    const wishlist = checkRemProductWishlist({ wishDB, wishData });
+    const wishlist = decreaseProductWishlist({ wishDB, wishData });
 
     const customerWishlist = { userId, wishlist };
 

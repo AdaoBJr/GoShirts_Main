@@ -5,11 +5,11 @@ import checkEmailExists from './checkEmailExists';
 import checkTokenExists from './checkTokenExists';
 import checkUserIdExists from './checkUserIdExists';
 import checkAddressExists from './checkAddressExists';
-import checkProductExistsBySku from './checkProductExistsBySku';
-import checkProductExistsByData from './checkProductExistsByData';
+import checkProductExists from './checkProductExists';
+import checkProductOnRepos from './checkProductOnRepos';
 import checkWishlistExist from './checkWishlistExist';
-import checkAddProductWishlist from './checkAddProductWishlist';
-import checkRemProductWishlist from './checkRemProductWishlist';
+import increaseProductWishlist from './increaseProductWishlist';
+import decreaseProductWishlist from './decreaseProductWishlist';
 
 export {
   decodeToken,
@@ -19,9 +19,9 @@ export {
   checkTokenExists,
   checkUserIdExists,
   checkAddressExists,
-  checkProductExistsBySku,
-  checkProductExistsByData,
+  checkProductExists,
+  checkProductOnRepos,
   checkWishlistExist,
-  checkAddProductWishlist,
-  checkRemProductWishlist,
+  increaseProductWishlist,
+  decreaseProductWishlist,
 };

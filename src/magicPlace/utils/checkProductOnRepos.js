@@ -2,7 +2,7 @@ import { CustomerWishlistRepository } from '../../repositories/mongodb/models/cu
 import { ProductRepository } from '../../repositories/mongodb/models/products';
 import { productDoesNotExists as error } from '../errors';
 
-const checkProductExistsByData = async ({ userId, data, decrease }) => {
+const checkProductOnRepos = async ({ userId, data, decrease }) => {
   const wishChecked = await Promise.all(
     data.map(async ({ sku, quantity }) => {
       const prodRepo = await ProductRepository.findOne({ sku }).exec();
@@ -25,4 +25,4 @@ const checkProductExistsByData = async ({ userId, data, decrease }) => {
   return { wishChecked, wishData };
 };
 
-export default checkProductExistsByData;
+export default checkProductOnRepos;

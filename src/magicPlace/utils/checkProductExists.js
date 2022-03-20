@@ -1,6 +1,6 @@
 import { ProductRepository } from '../../repositories/mongodb/models/products';
 
-const checkProductExistsBySku = async ({ sku }) =>
+const checkProductExists = async ({ sku }) =>
   await ProductRepository.findOne({ sku }).exec();
 
-export default checkProductExistsBySku;
+export default checkProductExists;
