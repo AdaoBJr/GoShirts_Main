@@ -7,6 +7,7 @@ import ApiError, {
 import {
   checkAddProductWishlist,
   checkProductExistsByData,
+  checkRemProductWishlist,
   checkUserIdExists,
   checkWishlistExist,
   generateRefreshToken,
@@ -43,8 +44,32 @@ const useCustomerWishlist = () => {
     const user = await checkUserIdExists({ userId });
     if (!user) ApiError(userDoesNotExist);
 
-    const wishlistExists = await checkWishlistExist({ userId });
-    if (!wishlistExists) ApiError(wishlistDoesNotExistsOrIsEmpty);
+    const wishDB = await checkWishlistExist({ userId });
+    if (!wishDB) ApiError(wishlistDoesNotExistsOrIsEmpty);
+
+    const { wishChecked, wishData } = await checkProductExistsByData({
+      userId,
+      data,
+      decrease: true,
+    });
+    const wishlist = checkRemProductWishlist({ wishDB, wishData });
+
+    const customerWishlist = { userId, wishlist };
+
+    if (wishDB)
+      await CustomerWishlistRepository.findOneAndUpdate({ userId }, customerWishlist, {
+        new: true,
+      });
+
+    if (!wishDB) {
+      const created = await CustomerWishlistRepository.create(customerWishlist);
+      if (!created) ApiError(unexpectedError);
+    }
+
+    return {
+      token: generateRefreshToken({ token }),
+      wishlist: wishChecked,
+    };
   };
 
   return { AddProductsToWishlist, RemoveProductsToWishlist };
