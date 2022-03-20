@@ -56,7 +56,7 @@ input CustomerAddressUpdateInput {
   defaultBilling: Boolean
 }
 
-input CustomerWishlist {
+input CustomerWishlistInput {
   sku: String!
   quantity: Int!
 }
@@ -126,6 +126,11 @@ type CreatedWishlist {
   wishlist: [Wishlist!]!
 }
 
+type CustomerWishlist {
+  userId: String!
+  wishlist: [Wishlist!]!
+}
+
 type RemovedWishlist {
   token: String!
   wishlist: [Wishlist!]!
@@ -140,6 +145,8 @@ type SignOutCustomer {
 type Query {
   customerList: [Customer!]!
   customer: CreatedCustomer!
+  customerWishList: [CustomerWishlist!]!
+  wishlist: CreatedWishlist!
 }
 
 type Mutation {
@@ -151,6 +158,6 @@ type Mutation {
   deleteCustomerAddress(ID: ID!): DeletedCustomer!
   signInCustomer(data: CustomerSignInInput!): CreatedTokenCustomer!
   signOutCustomer: SignOutCustomer!
-  addProductsToWishlist(data: [CustomerWishlist!]!): CreatedWishlist!
-  removeProductsToWishlist(data: [CustomerWishlist!]!): RemovedWishlist!
+  addProductsToWishlist(data: [CustomerWishlistInput!]!): CreatedWishlist!
+  removeProductsToWishlist(data: [CustomerWishlistInput!]!): RemovedWishlist!
 }
