@@ -6,10 +6,13 @@ const checkProductOnRepos = async ({ userId, data, decrease }) => {
   const wishChecked = await Promise.all(
     data.map(async ({ sku, quantity }) => {
       const prodRepo = await ProductRepository.findOne({ sku }).exec();
-      const wishRepo = decrease
-        ? await CustomerWishlistRepository.findOne({ userId }).exec()
+
+      const wishRepo =
+        decrease && (await CustomerWishlistRepository.findOne({ userId }).exec());
+
+      const prodInWish = decrease
+        ? wishRepo.wishlist.find((item) => item.sku === sku)
         : !decrease;
-      const prodInWish = wishRepo && wishRepo.wishlist.find((item) => item.sku === sku);
 
       return {
         sku,
