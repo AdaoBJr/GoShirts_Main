@@ -14,6 +14,18 @@ import {
 } from '../../utils';
 
 const useCustomerWishlist = () => {
+  const CustomerWishList = async () => await CustomerWishlistRepository.find();
+
+  const Wishlist = async ({ id, token }) => {
+    const wishDB = await checkWishlistExist({ id });
+    if (!wishDB) ApiError(wishlistDoesNotExistsOrIsEmpty);
+
+    return {
+      token: generateRefreshToken({ token }),
+      wishlist: wishDB.wishlist,
+    };
+  };
+
   const AddProductsToWishlist = async ({ args: { id: userId, token, data } }) => {
     const user = await checkUserIdExists({ userId });
     if (!user) ApiError(userDoesNotExist);
@@ -72,7 +84,12 @@ const useCustomerWishlist = () => {
     };
   };
 
-  return { AddProductsToWishlist, RemoveProductsToWishlist };
+  return {
+    CustomerWishList,
+    Wishlist,
+    AddProductsToWishlist,
+    RemoveProductsToWishlist,
+  };
 };
 
 export default useCustomerWishlist;
