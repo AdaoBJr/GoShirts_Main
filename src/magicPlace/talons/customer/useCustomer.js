@@ -18,6 +18,7 @@ import {
   CustomerRepository,
   CustomerTokensRepository,
   CustomerAddressRepository,
+  CustomerWishlistRepository,
 } from '../../../repositories/mongodb/models/customer';
 
 const useCustomer = () => {
@@ -28,6 +29,7 @@ const useCustomer = () => {
     if (!user) ApiError(userAlreadyRemoved);
     await CustomerTokensRepository.deleteMany({ userId: user.id });
     await CustomerAddressRepository.deleteMany({ userId: user.id });
+    await CustomerWishlistRepository.deleteMany({ userId: user.id });
 
     return { delete: !!(await CustomerRepository.findOneAndDelete({ email })) };
   };
