@@ -3,6 +3,7 @@ import isAuth from './tools/isAuth';
 const checkAuth = {
   Query: {
     customer: isAuth,
+    wishlist: isAuth,
     productList: isAuth,
   },
   Mutation: {
