@@ -1,6 +1,9 @@
-import { CustomerRepository } from '../../../repositories/mongodb/models/customer';
-import ApiError, { tokenInvalidOrUnath, tokenIsMissing } from '../../errors';
-import { checkTokenExists, decodeToken } from '../../utils';
+import ApiError, {
+  tokenInvalidOrUnath,
+  tokenIsMissing,
+  userDoesNotExist,
+} from '../../errors';
+import { checkTokenExists, checkUserIdExists, decodeToken } from '../../utils';
 
 const isAuth = async (resolve, parent, args, context, info) => {
   const authHeader = context.authorization;
@@ -17,8 +20,8 @@ const isAuth = async (resolve, parent, args, context, info) => {
 
   const { id } = decodeToken({ token });
 
-  const userExists = await CustomerRepository.findOne({ id }).exec();
-  if (!userExists) ApiError(tokenInvalidOrUnath);
+  const userExists = await checkUserIdExists({ id });
+  if (!userExists) ApiError(userDoesNotExist);
 
   Object.assign(args, { id, token });
   return await resolve(parent, args, context, info);
