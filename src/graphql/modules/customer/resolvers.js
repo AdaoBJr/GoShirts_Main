@@ -6,7 +6,7 @@ import {
 
 const {
   CustomerList,
-  Customer,
+  CustomerInfo,
   CustomerTokens,
   UpdateCustomer,
   DeleteCustomer,
@@ -33,7 +33,7 @@ export default {
   },
   Query: {
     customerList: async () => await CustomerList(),
-    customer: async (_, { id, token }) => await Customer({ id, token }),
+    customerInfo: async (_, { id, token }) => await CustomerInfo({ id, token }),
     customerWishList: async () => await CustomerWishList(),
     wishlist: async (_, { id, token }) => await Wishlist({ id, token }),
   },

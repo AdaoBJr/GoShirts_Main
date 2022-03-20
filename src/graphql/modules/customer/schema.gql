@@ -158,7 +158,7 @@ type SignOutCustomer {
 
 type Query {
   customerList: [Customer!]!
-  customer: CreatedCustomer!
+  customerInfo: CreatedCustomer!
   customerWishList: [CustomerWishlist!]!
   wishlist: Wishlist!
 }

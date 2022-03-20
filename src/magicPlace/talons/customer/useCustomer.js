@@ -37,7 +37,7 @@ const useCustomer = () => {
   const CustomerTokens = async ({ id: userId }) =>
     await CustomerTokensRepository.find({ userId });
 
-  const Customer = async ({ id, token }) => ({
+  const CustomerInfo = async ({ id, token }) => ({
     token: generateRefreshToken({ token }),
     customer: await CustomerRepository.findOne({ id }).exec(),
   });
@@ -85,7 +85,7 @@ const useCustomer = () => {
 
   return {
     CustomerList,
-    Customer,
+    CustomerInfo,
     CustomerTokens,
     UpdateCustomer,
     DeleteCustomer,
