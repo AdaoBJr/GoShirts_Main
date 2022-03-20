@@ -20,10 +20,12 @@ const useCustomerWishlist = () => {
     const wishDB = await checkWishlistExist({ id });
     if (!wishDB) ApiError(wishlistDoesNotExistsOrIsEmpty);
 
-    return {
-      token: generateRefreshToken({ token }),
-      wishlist: wishDB.wishlist,
-    };
+    return token
+      ? {
+          token: generateRefreshToken({ token }),
+          wishlist: wishDB.wishlist,
+        }
+      : wishDB.wishlist;
   };
 
   const AddProductsToWishlist = async ({ args: { id: userId, token, data } }) => {
