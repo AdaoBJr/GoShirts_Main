@@ -4,7 +4,7 @@ import { CustomerTokensRepository } from '../../repositories/mongodb/models/cust
 
 const jwtConfig = {
   algorithm: 'HS256',
-  expiresIn: '10m',
+  expiresIn: '1d',
 };
 
 const generateToken = async ({ id: userId }) => {
