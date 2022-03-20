@@ -130,7 +130,7 @@ type Wishlist {
 type CreatedWishlist {
   token: String!
   count: Int
-  wishlist: [Wish!]!
+  items: [Wish!]!
 }
 
 type Wishlist {
@@ -147,7 +147,7 @@ type CustomerWishlist {
 
 type RemovedWishlist {
   token: String!
-  wishlist: [Wish!]!
+  items: [Wish!]!
 }
 
 type SignOutCustomer {

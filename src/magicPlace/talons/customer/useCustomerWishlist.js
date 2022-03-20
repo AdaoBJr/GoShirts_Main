@@ -24,9 +24,9 @@ const useCustomerWishlist = () => {
       ? {
           token: generateRefreshToken({ token }),
           count: wishDB.count,
-          items: wishDB.wishlist,
+          items: wishDB.items,
         }
-      : { count: wishDB.count, items: wishDB.wishlist };
+      : { count: wishDB.count, items: wishDB.items };
   };
 
   const AddProductsToWishlist = async ({ args: { id: userId, token, data } }) => {
@@ -36,10 +36,10 @@ const useCustomerWishlist = () => {
     const wishDB = await checkWishlistExist({ userId });
     const { wishChecked, wishData } = await checkProductOnRepos({ data });
 
-    const wishlist = increaseProductWishlist({ wishDB, wishData });
-    const count = wishlist.length;
+    const items = increaseProductWishlist({ wishDB, wishData });
+    const count = items.length;
 
-    const customerWishlist = { userId, wishlist, count };
+    const customerWishlist = { userId, items, count };
 
     if (wishDB)
       await CustomerWishlistRepository.findOneAndUpdate({ userId }, customerWishlist, {
@@ -54,7 +54,7 @@ const useCustomerWishlist = () => {
     return {
       token: generateRefreshToken({ token }),
       count,
-      wishlist: wishChecked,
+      items: wishChecked,
     };
   };
 
@@ -70,10 +70,10 @@ const useCustomerWishlist = () => {
       data,
       decrease: true,
     });
-    const wishlist = decreaseProductWishlist({ wishDB, wishData });
-    const count = wishlist.length;
+    const items = decreaseProductWishlist({ wishDB, wishData });
+    const count = items.length;
 
-    const customerWishlist = { userId, wishlist, count };
+    const customerWishlist = { userId, items, count };
 
     if (wishDB)
       await CustomerWishlistRepository.findOneAndUpdate({ userId }, customerWishlist, {
@@ -88,7 +88,7 @@ const useCustomerWishlist = () => {
     return {
       token: generateRefreshToken({ token }),
       count,
-      wishlist: wishChecked,
+      items: wishChecked,
     };
   };
 

@@ -11,7 +11,7 @@ const checkProductOnRepos = async ({ userId, data, decrease }) => {
         decrease && (await CustomerWishlistRepository.findOne({ userId }).exec());
 
       const prodInWish = decrease
-        ? wishRepo.wishlist.find((item) => item.sku === sku)
+        ? wishRepo.items.find((item) => item.sku === sku)
         : !decrease;
 
       return {
