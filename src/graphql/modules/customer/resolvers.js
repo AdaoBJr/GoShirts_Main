@@ -29,6 +29,7 @@ export default {
   Customer: {
     tokens: async ({ id }) => await CustomerTokens({ id }),
     address: async ({ id }) => await CustomerAddress({ id }),
+    wishlist: async ({ id }) => await Wishlist({ id }),
   },
   Query: {
     customerList: async () => await CustomerList(),
