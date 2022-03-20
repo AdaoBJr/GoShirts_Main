@@ -9,6 +9,10 @@ const Schema = new mongoose.Schema({
     type: Array,
     required: true,
   },
+  count: {
+    type: Number,
+    required: true,
+  },
 });
 
 const CustomerWishlistRepository = mongoose.model(

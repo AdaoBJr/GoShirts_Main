@@ -73,7 +73,7 @@ type Customer {
   date_of_birth: String!
   gender: Int!
   address: [CustomerAddress!]!
-  wishlist: [Wishlist!]!
+  wishlist: CustomerWishlist!
   tokens: [CustomerTokens!]!
 }
 
@@ -96,11 +96,10 @@ type CustomerTokens {
   token: String!
 }
 
-type Wishlist {
+type Wish {
   sku: String!
   quantity: Int!
   error: String
-  count: Int
 }
 
 # RETURNS
@@ -122,19 +121,33 @@ type CreatedTokenCustomer {
   token: String!
 }
 
+type Wishlist {
+  token: String!
+  count: String!
+  items: [Wish!]!
+}
+
 type CreatedWishlist {
   token: String!
-  wishlist: [Wishlist!]!
+  count: Int
+  wishlist: [Wish!]!
+}
+
+type Wishlist {
+  token: String!
+  count: String
+  items: [Wish!]!
 }
 
 type CustomerWishlist {
-  userId: String!
-  wishlist: [Wishlist!]!
+  userId: String
+  count: Int
+  items: [Wish!]!
 }
 
 type RemovedWishlist {
   token: String!
-  wishlist: [Wishlist!]!
+  wishlist: [Wish!]!
 }
 
 type SignOutCustomer {
@@ -147,7 +160,7 @@ type Query {
   customerList: [Customer!]!
   customer: CreatedCustomer!
   customerWishList: [CustomerWishlist!]!
-  wishlist: CreatedWishlist!
+  wishlist: Wishlist!
 }
 
 type Mutation {
