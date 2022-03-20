@@ -4,7 +4,6 @@ const checkAuth = {
   Query: {
     customer: isAuth,
     wishlist: isAuth,
-    productList: isAuth,
   },
   Mutation: {
     updateCustomer: isAuth,
