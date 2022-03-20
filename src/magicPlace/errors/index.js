@@ -16,5 +16,6 @@ export const wishlistDoesNotExistsOrIsEmpty = {
   code: 401,
   msg: 'Wishlist does not exists or is empty.',
 };
+export const dataIsMissing = { code: 401, msg: 'Data is missing.' };
 
 export { default } from './ApiError';
