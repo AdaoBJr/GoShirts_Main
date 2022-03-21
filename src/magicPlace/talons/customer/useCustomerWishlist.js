@@ -1,5 +1,6 @@
 import { CustomerWishlistRepository } from '../../../repositories/mongodb/models/customer';
 import ApiError, {
+  productDoesNotExists,
   unexpectedError,
   userDoesNotExist,
   wishlistDoesNotExistsOrIsEmpty,
@@ -11,6 +12,7 @@ import {
   checkUserIdExists,
   checkWishlistExist,
   generateRefreshToken,
+  checkProductExists,
 } from '../../utils';
 
 const useCustomerWishlist = () => {
@@ -92,11 +94,20 @@ const useCustomerWishlist = () => {
     };
   };
 
+  const ProductWishlist = async ({ parent: { sku } }) => {
+    const product = await checkProductExists({ sku });
+    if (!product) ApiError(productDoesNotExists);
+
+    const { name, description } = product;
+    return { name, description };
+  };
+
   return {
     CustomerWishList,
     Wishlist,
     AddProductsToWishlist,
     RemoveProductsToWishlist,
+    ProductWishlist,
   };
 };
 
