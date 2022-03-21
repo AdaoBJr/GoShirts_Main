@@ -22,14 +22,22 @@ const {
   DeleteCustomerAddress,
 } = useCustomerAddress();
 
-const { CustomerWishList, Wishlist, AddProductsToWishlist, RemoveProductsToWishlist } =
-  useCustomerWishlist();
+const {
+  CustomerWishList,
+  Wishlist,
+  AddProductsToWishlist,
+  RemoveProductsToWishlist,
+  ProductWishlist,
+} = useCustomerWishlist();
 
 export default {
   Customer: {
     tokens: async ({ id }) => await CustomerTokens({ id }),
     address: async ({ id }) => await CustomerAddress({ id }),
     wishlist: async ({ id }) => await Wishlist({ id }),
+  },
+  Wish: {
+    product: async (parent) => await ProductWishlist({ parent }),
   },
   Query: {
     customerList: async () => await CustomerList(),
