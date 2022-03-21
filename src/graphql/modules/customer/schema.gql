@@ -96,9 +96,15 @@ type CustomerTokens {
   token: String!
 }
 
+type ProductWishlist {
+  name: String!
+  description: String!
+}
+
 type Wish {
   sku: String!
   quantity: Int!
+  product: ProductWishlist
   error: String
 }
 
