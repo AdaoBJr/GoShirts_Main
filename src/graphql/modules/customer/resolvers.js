@@ -13,6 +13,7 @@ const {
   CreateCustomer,
   SignInCustomer,
   SignOutCustomer,
+  RequestPasswordResetEmail,
 } = useCustomer();
 
 const {
@@ -54,7 +55,9 @@ export default {
     deleteCustomerAddress: async (_, args) => await DeleteCustomerAddress({ args }),
     signInCustomer: async (_, { data }) => await SignInCustomer({ data }),
     signOutCustomer: async (_, args) => await SignOutCustomer({ args }),
-    addProductsToWishlist: async (_, args) => AddProductsToWishlist({ args }),
-    removeProductsToWishlist: async (_, args) => RemoveProductsToWishlist({ args }),
+    addProductsToWishlist: async (_, args) => await AddProductsToWishlist({ args }),
+    removeProductsToWishlist: async (_, args) => await RemoveProductsToWishlist({ args }),
+    requestPasswordResetEmail: async (_, { email }) =>
+      await RequestPasswordResetEmail({ email }),
   },
 };
