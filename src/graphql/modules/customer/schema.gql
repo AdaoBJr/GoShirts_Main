@@ -160,6 +160,10 @@ type SignOutCustomer {
   signOut: Boolean!
 }
 
+type RequestedEmail {
+  requested: Boolean!
+}
+
 # QUERIES / MUTATIONS
 
 type Query {
@@ -180,4 +184,5 @@ type Mutation {
   signOutCustomer: SignOutCustomer!
   addProductsToWishlist(data: [CustomerWishlistInput!]!): CreatedWishlist!
   removeProductsToWishlist(data: [CustomerWishlistInput!]!): RemovedWishlist!
+  requestPasswordResetEmail(email: String!): RequestedEmail!
 }
