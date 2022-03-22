@@ -12,6 +12,7 @@ import {
   generateRefreshToken,
   checkEmailExists,
   checkUserIdExists,
+  generateTokenResetEmail,
 } from '../../utils';
 
 import {
@@ -20,6 +21,10 @@ import {
   CustomerAddressRepository,
   CustomerWishlistRepository,
 } from '../../../repositories/mongodb/models/customer';
+
+import { useMailProvider } from '../../../providers/mailProvider/customer';
+
+const { SendForgotMail } = useMailProvider();
 
 const useCustomer = () => {
   const CustomerList = async () => await CustomerRepository.find();
@@ -70,7 +75,7 @@ const useCustomer = () => {
 
   const SignInCustomer = async ({ data }) => {
     const { email, password } = data;
-    const user = await CustomerRepository.findOne({ email }).exec();
+    const user = await checkEmailExists({ email: data.email });
     if (!user) ApiError(emailOrPwdIncorrect);
 
     const passwordMatch = await compare(password, user.password);
@@ -83,6 +88,16 @@ const useCustomer = () => {
     signOut: !!(await CustomerTokensRepository.findOneAndDelete(token)),
   });
 
+  const RequestPasswordResetEmail = async ({ email }) => {
+    const user = await checkEmailExists({ email });
+    if (!user) ApiError(emailOrPwdIncorrect);
+
+    const token = await generateTokenResetEmail({ id: user.id });
+    const userData = { token, email, firstname: user.firstname, lastname: user.lastname };
+
+    return await SendForgotMail({ userData });
+  };
+
   return {
     CustomerList,
     CustomerInfo,
@@ -92,6 +107,7 @@ const useCustomer = () => {
     CreateCustomer,
     SignInCustomer,
     SignOutCustomer,
+    RequestPasswordResetEmail,
   };
 };
 
