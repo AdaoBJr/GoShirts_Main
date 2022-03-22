@@ -88,7 +88,7 @@ const useCustomer = () => {
     signOut: !!(await CustomerTokensRepository.findOneAndDelete(token)),
   });
 
-  const RequestPasswordResetEmail = async ({ email }) => {
+  const RequestPwdResetEmail = async ({ email }) => {
     const user = await checkEmailExists({ email });
     if (!user) ApiError(emailOrPwdIncorrect);
 
@@ -107,7 +107,7 @@ const useCustomer = () => {
     CreateCustomer,
     SignInCustomer,
     SignOutCustomer,
-    RequestPasswordResetEmail,
+    RequestPwdResetEmail,
   };
 };
 

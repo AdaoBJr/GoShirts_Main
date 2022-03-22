@@ -13,7 +13,7 @@ const {
   CreateCustomer,
   SignInCustomer,
   SignOutCustomer,
-  RequestPasswordResetEmail,
+  RequestPwdResetEmail,
 } = useCustomer();
 
 const {
@@ -57,7 +57,6 @@ export default {
     signOutCustomer: async (_, args) => await SignOutCustomer({ args }),
     addProductsToWishlist: async (_, args) => await AddProductsToWishlist({ args }),
     removeProductsToWishlist: async (_, args) => await RemoveProductsToWishlist({ args }),
-    requestPasswordResetEmail: async (_, { email }) =>
-      await RequestPasswordResetEmail({ email }),
+    requestPwdResetEmail: async (_, { email }) => await RequestPwdResetEmail({ email }),
   },
 };

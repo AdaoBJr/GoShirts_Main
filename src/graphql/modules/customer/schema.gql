@@ -184,5 +184,5 @@ type Mutation {
   signOutCustomer: SignOutCustomer!
   addProductsToWishlist(data: [CustomerWishlistInput!]!): CreatedWishlist!
   removeProductsToWishlist(data: [CustomerWishlistInput!]!): RemovedWishlist!
-  requestPasswordResetEmail(email: String!): RequestedEmail!
+  requestPwdResetEmail(email: String!): RequestedEmail!
 }
