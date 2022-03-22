@@ -2,11 +2,12 @@ import { verify } from 'jsonwebtoken';
 import ApiError, { expiredSession } from '../errors';
 const { JWT_SECRET } = process.env;
 
-const decodeToken = ({ token }) => {
+const decodeToken = ({ token, genNewToken }) => {
   try {
     return verify(token, JWT_SECRET);
   } catch (error) {
-    ApiError(expiredSession);
+    if (!genNewToken) ApiError(expiredSession);
+    if (genNewToken) return { expired: true };
   }
 };
 

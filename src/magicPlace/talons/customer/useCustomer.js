@@ -39,8 +39,9 @@ const useCustomer = () => {
     return { delete: !!(await CustomerRepository.findOneAndDelete({ email })) };
   };
 
-  const CustomerTokens = async ({ id: userId }) =>
-    await CustomerTokensRepository.find({ userId });
+  const CustomerTokens = async ({ id: userId }) => ({
+    items: (await CustomerTokensRepository.findOne({ userId }).exec()).items,
+  });
 
   const CustomerInfo = async ({ id, token }) => ({
     token: generateRefreshToken({ token }),
@@ -75,13 +76,13 @@ const useCustomer = () => {
 
   const SignInCustomer = async ({ data }) => {
     const { email, password } = data;
-    const user = await checkEmailExists({ email: data.email });
+    const user = await checkEmailExists({ email });
     if (!user) ApiError(emailOrPwdIncorrect);
 
     const passwordMatch = await compare(password, user.password);
     if (!passwordMatch) ApiError(emailOrPwdIncorrect);
 
-    return { token: generateToken({ id: user.id }) };
+    return { token: generateToken({ userId: user.id }) };
   };
 
   const SignOutCustomer = async ({ args: { token } }) => ({

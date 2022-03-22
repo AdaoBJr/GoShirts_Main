@@ -1,6 +1,6 @@
 import { CustomerTokensRepository } from '../../repositories/mongodb/models/customer';
 
 const checkTokenExists = async ({ token }) =>
-  await CustomerTokensRepository.findOne({ token }).exec();
+  await CustomerTokensRepository.find({ items: { $eq: token } });
 
 export default checkTokenExists;

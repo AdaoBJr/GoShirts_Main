@@ -2,7 +2,8 @@ import dayjs from 'dayjs';
 import { sign } from 'jsonwebtoken';
 import { decodeToken } from '.';
 import { CustomerTokensRepository } from '../../repositories/mongodb/models/customer';
-import ApiError, { expiredSession } from '../errors';
+import ApiError, { expiredSession, tokenInvalidOrUnath } from '../errors';
+import checkTokenExists from './checkTokenExists';
 
 const { JWT_SECRET } = process.env;
 
@@ -14,6 +15,9 @@ const jwtConfig = {
 const BREAK_POINT = 60 * 5;
 
 const generateRefreshToken = async ({ token }) => {
+  const tokens = await checkTokenExists({ token });
+  if (!tokens.length || tokens.length > 1) ApiError(tokenInvalidOrUnath);
+
   const { id, exp } = decodeToken({ token });
 
   const now = dayjs().format();
@@ -24,8 +28,14 @@ const generateRefreshToken = async ({ token }) => {
   if (HAS_TIME <= 0) return ApiError(expiredSession);
   if (BREAK_POINT >= HAS_TIME > 0) {
     const newToken = sign({ id }, JWT_SECRET, jwtConfig);
-    const data = { userId: id, token: newToken };
-    await CustomerTokensRepository.findOneAndUpdate({ token }, data, { new: true });
+
+    const allTokens = [...tokens[0].items, newToken];
+    const items = allTokens.filter((item) => item !== token);
+    const customerToken = { userId: id, items, count: items.length };
+
+    await CustomerTokensRepository.findOneAndUpdate({ userId: id }, customerToken, {
+      new: true,
+    });
     return newToken;
   }
 };

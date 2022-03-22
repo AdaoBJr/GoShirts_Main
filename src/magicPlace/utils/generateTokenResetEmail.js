@@ -10,7 +10,8 @@ const jwtConfig = {
 const generateTokenResetEmail = async ({ id: userId }) => {
   await CustomerTokensRepository.deleteMany({ userId });
   const token = sign({ id: userId }, JWT_SECRET, jwtConfig);
-  const customerToken = { userId, token };
+  const customerToken = { userId, items: [token], count: 1 };
+
   await CustomerTokensRepository.create(customerToken);
 
   return token;

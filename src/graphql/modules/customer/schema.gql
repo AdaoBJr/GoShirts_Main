@@ -73,8 +73,8 @@ type Customer {
   date_of_birth: String!
   gender: Int!
   address: [CustomerAddress!]!
-  wishlist: CustomerWishlist!
-  tokens: [CustomerTokens!]!
+  wishlist: CustomerWishlist
+  tokens: CustomerTokens
 }
 
 type CustomerAddress {
@@ -92,8 +92,7 @@ type CustomerAddress {
 }
 
 type CustomerTokens {
-  userId: ID!
-  token: String!
+  items: [String!]!
 }
 
 type ProductWishlist {
