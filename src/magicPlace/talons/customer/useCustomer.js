@@ -4,6 +4,8 @@ import { hash, compare } from 'bcrypt';
 import ApiError, {
   emailExists,
   emailOrPwdIncorrect,
+  expiredSession,
+  tokenInvalidOrUnath,
   userAlreadyRemoved,
   userDoesNotExist,
 } from '../../errors';
@@ -13,6 +15,8 @@ import {
   checkEmailExists,
   checkUserIdExists,
   generateTokenResetEmail,
+  checkTokenExists,
+  decodeToken,
 } from '../../utils';
 
 import {
@@ -99,6 +103,30 @@ const useCustomer = () => {
     return await SendForgotMail({ userData });
   };
 
+  const ChangePassword = async ({ data: { userId, newPassword } }) => {
+    const customerToken = await checkTokenExists({ userId });
+    if (!customerToken) ApiError(tokenInvalidOrUnath);
+
+    const userExists = await checkUserIdExists({ userId });
+    if (!userExists) ApiError(tokenInvalidOrUnath);
+
+    const tokens = customerToken.items;
+    if (tokens.length > 1 || !tokens.length) ApiError(tokenInvalidOrUnath);
+
+    const token = decodeToken({ token: tokens[0] });
+    if (!token) ApiError(expiredSession);
+
+    const passwordHash = await hash(newPassword, 8);
+
+    const updatedPwd = await CustomerRepository.findOneAndUpdate(
+      { id: userId },
+      { password: passwordHash },
+      { new: true }
+    );
+
+    return { newPassword: !!updatedPwd };
+  };
+
   return {
     CustomerList,
     CustomerInfo,
@@ -109,6 +137,7 @@ const useCustomer = () => {
     SignInCustomer,
     SignOutCustomer,
     RequestPwdResetEmail,
+    ChangePassword,
   };
 };
 
