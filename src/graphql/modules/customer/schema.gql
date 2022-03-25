@@ -61,6 +61,11 @@ input CustomerWishlistInput {
   quantity: Int!
 }
 
+input ChangePwdInput {
+  userId: String!
+  newPassword: String!
+}
+
 # BASE SCHEMAS
 type Customer {
   id: ID!
@@ -163,6 +168,10 @@ type RequestedEmail {
   requested: Boolean!
 }
 
+type ChangedPassword {
+  newPassword: Boolean!
+}
+
 # QUERIES / MUTATIONS
 
 type Query {
@@ -184,4 +193,5 @@ type Mutation {
   addProductsToWishlist(data: [CustomerWishlistInput!]!): CreatedWishlist!
   removeProductsToWishlist(data: [CustomerWishlistInput!]!): RemovedWishlist!
   requestPwdResetEmail(email: String!): RequestedEmail!
+  changePassword(data: ChangePwdInput!): ChangedPassword!
 }
