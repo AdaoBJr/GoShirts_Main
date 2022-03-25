@@ -1,4 +1,5 @@
 import { sign } from 'jsonwebtoken';
+
 const { JWT_SECRET } = process.env;
 import { CustomerTokensRepository } from '../../repositories/mongodb/models/customer';
 
@@ -14,7 +15,7 @@ const generateTokenResetEmail = async ({ id: userId }) => {
 
   await CustomerTokensRepository.create(customerToken);
 
-  return token;
+  return userId;
 };
 
 export default generateTokenResetEmail;
