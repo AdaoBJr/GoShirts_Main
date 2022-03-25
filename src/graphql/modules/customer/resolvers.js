@@ -14,6 +14,7 @@ const {
   SignInCustomer,
   SignOutCustomer,
   RequestPwdResetEmail,
+  ChangePassword,
 } = useCustomer();
 
 const {
@@ -58,5 +59,6 @@ export default {
     addProductsToWishlist: async (_, args) => await AddProductsToWishlist({ args }),
     removeProductsToWishlist: async (_, args) => await RemoveProductsToWishlist({ args }),
     requestPwdResetEmail: async (_, { email }) => await RequestPwdResetEmail({ email }),
+    changePassword: async (_, { data }) => await ChangePassword({ data }),
   },
 };
