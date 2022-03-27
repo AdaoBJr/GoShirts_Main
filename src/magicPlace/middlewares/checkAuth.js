@@ -14,6 +14,7 @@ const checkAuth = {
     createProduct: isAuth,
     addProductsToWishlist: isAuth,
     removeProductsToWishlist: isAuth,
+    updateAvatarImage: isAuth,
   },
 };
 
