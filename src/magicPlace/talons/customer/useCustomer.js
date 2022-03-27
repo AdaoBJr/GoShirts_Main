@@ -7,7 +7,6 @@ import ApiError, {
   expiredSession,
   tokenInvalidOrUnath,
   userAlreadyRemoved,
-  userDoesNotExist,
 } from '../../errors';
 import {
   generateToken,
@@ -53,9 +52,6 @@ const useCustomer = () => {
   });
 
   const UpdateCustomer = async ({ args: { id, token, data } }) => {
-    const user = await checkUserIdExists({ id });
-    if (!user) ApiError(userDoesNotExist);
-
     const userExists = await checkEmailExists({ email: data.email });
     if (userExists) ApiError(emailExists);
 
@@ -103,7 +99,7 @@ const useCustomer = () => {
     return await SendForgotMail({ userData });
   };
 
-  const ChangePassword = async ({ data: { userId, newPassword } }) => {
+  const ResetPassword = async ({ data: { userId, newPassword } }) => {
     const customerToken = await checkTokenExists({ userId });
     if (!customerToken) ApiError(tokenInvalidOrUnath);
 
@@ -118,14 +114,25 @@ const useCustomer = () => {
 
     const passwordHash = await hash(newPassword, 8);
 
-    const updatedPwd = await CustomerRepository.findOneAndUpdate(
+    const resetedPwd = await CustomerRepository.findOneAndUpdate(
       { id: userId },
       { password: passwordHash },
       { new: true }
     );
 
-    return { newPassword: !!updatedPwd };
+    await CustomerTokensRepository.deleteMany({ userId });
+
+    return { newPassword: !!resetedPwd };
   };
+
+  const UpdateAvatarImage = async ({ args: { id, token, file } }) => ({
+    token: generateRefreshToken({ token }),
+    updated: !!(await CustomerRepository.findOneAndUpdate(
+      { id },
+      { avatarImage: file },
+      { new: true }
+    )),
+  });
 
   return {
     CustomerList,
@@ -137,7 +144,8 @@ const useCustomer = () => {
     SignInCustomer,
     SignOutCustomer,
     RequestPwdResetEmail,
-    ChangePassword,
+    ResetPassword,
+    UpdateAvatarImage,
   };
 };
 
