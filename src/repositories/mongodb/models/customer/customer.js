@@ -29,13 +29,16 @@ const Schema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  date_of_birth: {
+  dateOfBirth: {
     type: String,
     required: true,
   },
   gender: {
     type: Number,
     required: true,
+  },
+  avatarImage: {
+    type: String,
   },
 });
 
