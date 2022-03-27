@@ -19,8 +19,9 @@ input CustomerInput {
   telephone: String!
   cpf: String!
   password: String!
-  date_of_birth: String!
+  dateOfBirth: String!
   gender: Int!
+  avatarImage: String
 }
 
 input CustomerUpdateInput {
@@ -61,7 +62,7 @@ input CustomerWishlistInput {
   quantity: Int!
 }
 
-input ChangePwdInput {
+input ResetPwdInput {
   userId: String!
   newPassword: String!
 }
@@ -75,8 +76,9 @@ type Customer {
   telephone: String!
   cpf: String!
   password: String!
-  date_of_birth: String!
+  dateOfBirth: String!
   gender: Int!
+  avatarImage: String
   address: [CustomerAddress!]!
   wishlist: CustomerWishlist
   tokens: CustomerTokens
@@ -168,8 +170,13 @@ type RequestedEmail {
   requested: Boolean!
 }
 
-type ChangedPassword {
+type ResetedPassword {
   newPassword: Boolean!
+}
+
+type UpdatedAvatar {
+  token: String!
+  updated: Boolean!
 }
 
 # QUERIES / MUTATIONS
@@ -193,5 +200,6 @@ type Mutation {
   addProductsToWishlist(data: [CustomerWishlistInput!]!): CreatedWishlist!
   removeProductsToWishlist(data: [CustomerWishlistInput!]!): RemovedWishlist!
   requestPwdResetEmail(email: String!): RequestedEmail!
-  changePassword(data: ChangePwdInput!): ChangedPassword!
+  resetPassword(data: ResetPwdInput!): ResetedPassword!
+  updateAvatarImage(file: String!): UpdatedAvatar!
 }
