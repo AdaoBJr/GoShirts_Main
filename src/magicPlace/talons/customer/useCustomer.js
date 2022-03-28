@@ -48,14 +48,58 @@ const useCustomer = () => {
     items: (await CustomerTokensRepository.findOne({ userId }).exec()).items,
   });
 
+  const SubscribeNewsletter = async ({ email }) => {
+    const userExistInNewsletter = await checkNewsletterExist({ email });
+    if (userExistInNewsletter) return { subscribed: true };
+
+    const user = await checkEmailExists({ email });
+    if (user && !user.subscribe) {
+      await CustomerRepository.findOneAndUpdate(
+        { email },
+        { subscribe: true },
+        { new: true }
+      );
+      const customerData = { userId: user.id, email };
+      await CustomerNewsletterRepository.create(customerData);
+    }
+
+    const userId = uuidV4();
+    const customerData = { userId, email };
+    await CustomerNewsletterRepository.create(customerData);
+
+    return await SendEmailWelcomeNewsletter({ email });
+  };
+
+  const UnsubscribeNewsletter = async ({ email }) => {
+    const userExistInNewsletter = await checkNewsletterExist({ email });
+    if (!userExistInNewsletter) return { unsubscribed: true };
+
+    const user = await checkEmailExists({ email });
+    if (user && user.subscribe) {
+      await CustomerRepository.findOneAndUpdate(
+        { email },
+        { subscribe: false },
+        { new: true }
+      );
+      await CustomerNewsletterRepository.deleteMany({ email });
+    }
+
+    return { unsubscribed: !!(await CustomerNewsletterRepository.deleteMany({ email })) };
+  };
+
   const CustomerInfo = async ({ id, token }) => ({
     token: generateRefreshToken({ token }),
     customer: await CustomerRepository.findOne({ id }).exec(),
   });
 
   const UpdateCustomer = async ({ args: { id, token, data } }) => {
-    const userExists = await checkEmailExists({ email: data.email });
+    const { email } = data;
+
+    const userExists = await checkEmailExists({ email });
     if (userExists) ApiError(emailExists);
+
+    if (data.subscribe) await SendEmailWelcomeNewsletter({ email });
+    if (!data.subscribe) UnsubscribeNewsletter({ email });
 
     return {
       token: generateRefreshToken({ token }),
@@ -64,12 +108,14 @@ const useCustomer = () => {
   };
 
   const CreateCustomer = async ({ data }) => {
-    const user = await checkEmailExists({ email: data.email });
+    const { email } = data;
+
+    const user = await checkEmailExists({ email });
     if (user) ApiError(emailExists);
 
-    if (data.subscribe) await SendEmailWelcomeNewsletter({ email: data.email });
+    if (data.subscribe) await SendEmailWelcomeNewsletter({ email });
 
-    const userExistInNewsletter = await checkNewsletterExist({ email: data.email });
+    const userExistInNewsletter = await checkNewsletterExist({ email });
 
     let id = '';
     if (userExistInNewsletter) {
@@ -146,30 +192,10 @@ const useCustomer = () => {
     )),
   });
 
-  const SubscribeNewsletter = async ({ email }) => {
-    const userExistInNewsletter = await checkNewsletterExist({ email });
-    if (userExistInNewsletter) return { subscribed: true };
-
-    const user = await checkEmailExists({ email });
-    if (user && !user.subscribe) {
-      await CustomerRepository.findOneAndUpdate(
-        { email },
-        { subscribe: true },
-        { new: true }
-      );
-      const customerData = { userId: user.id, email };
-      await CustomerNewsletterRepository.create(customerData);
-    }
-
-    const userId = uuidV4();
-    const customerData = { userId, email };
-    await CustomerNewsletterRepository.create(customerData);
-
-    return await SendEmailWelcomeNewsletter({ email });
-  };
-
   return {
     CustomerList,
+    SubscribeNewsletter,
+    UnsubscribeNewsletter,
     CustomerInfo,
     CustomerTokens,
     UpdateCustomer,
@@ -180,7 +206,6 @@ const useCustomer = () => {
     RequestPwdResetEmail,
     ResetPassword,
     UpdateAvatarImage,
-    SubscribeNewsletter,
   };
 };
 
