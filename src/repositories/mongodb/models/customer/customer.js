@@ -37,6 +37,9 @@ const Schema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  subscribe: {
+    type: Boolean,
+  },
   avatarImage: {
     type: String,
   },
