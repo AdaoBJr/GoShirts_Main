@@ -17,6 +17,7 @@ const {
   ResetPassword,
   UpdateAvatarImage,
   SubscribeNewsletter,
+  UnsubscribeNewsletter,
 } = useCustomer();
 
 const {
@@ -64,5 +65,6 @@ export default {
     resetPassword: async (_, { data }) => await ResetPassword({ data }),
     updateAvatarImage: async (_, args) => await UpdateAvatarImage({ args }),
     subscribeNewsletter: async (_, { email }) => await SubscribeNewsletter({ email }),
+    unsubscribeNewsletter: async (_, { email }) => await UnsubscribeNewsletter({ email }),
   },
 };
