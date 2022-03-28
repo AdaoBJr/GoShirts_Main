@@ -1,5 +1,8 @@
 import requestAPIGateway from '../../../../magicPlace/utils/requestAPIGateway';
-import { SENT_FORGOT_EMAIL_MUTATION } from '../gql/Customer.gql';
+import {
+  SEND_EMAIL_FORGOT_PASSWORD_MUTATION,
+  SEND_EMAIL_WELCOME_NEWSLETTER_MUTATION,
+} from '../gql/Customer.gql';
 
 const useMailProvider = () => {
   const SendForgotMail = async ({ userData }) => {
@@ -10,14 +13,23 @@ const useMailProvider = () => {
       lastname,
     };
 
-    const query = SENT_FORGOT_EMAIL_MUTATION;
+    const query = SEND_EMAIL_FORGOT_PASSWORD_MUTATION;
     const data = { variables, query, token };
     const response = await requestAPIGateway({ data });
 
     return { requested: !!response };
   };
 
-  return { SendForgotMail };
+  const SendEmailWelcomeNewsletter = async ({ email }) => {
+    const variables = { email };
+
+    const query = SEND_EMAIL_WELCOME_NEWSLETTER_MUTATION;
+    const data = { variables, query, token: null };
+
+    return await requestAPIGateway({ data });
+  };
+
+  return { SendForgotMail, SendEmailWelcomeNewsletter };
 };
 
 export default useMailProvider;
