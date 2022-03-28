@@ -16,6 +16,7 @@ import {
   generateTokenResetEmail,
   checkTokenExists,
   decodeToken,
+  checkNewsletterExist,
 } from '../../utils';
 
 import {
@@ -23,11 +24,12 @@ import {
   CustomerTokensRepository,
   CustomerAddressRepository,
   CustomerWishlistRepository,
+  CustomerNewsletterRepository,
 } from '../../../repositories/mongodb/models/customer';
 
 import { useMailProvider } from '../../../providers/mailProvider/customer';
 
-const { SendForgotMail } = useMailProvider();
+const { SendForgotMail, SendEmailWelcomeNewsletter } = useMailProvider();
 
 const useCustomer = () => {
   const CustomerList = async () => await CustomerRepository.find();
@@ -65,12 +67,22 @@ const useCustomer = () => {
     const user = await checkEmailExists({ email: data.email });
     if (user) ApiError(emailExists);
 
-    const id = uuidV4();
-    const passwordHash = await hash(data.password, 8);
-    data.password = passwordHash;
+    if (data.subscribe) await SendEmailWelcomeNewsletter({ email: data.email });
 
-    const customerData = { id, ...data };
-    const customer = await CustomerRepository.create(customerData);
+    const userExistInNewsletter = await checkNewsletterExist({ email: data.email });
+
+    let id = '';
+    if (userExistInNewsletter) {
+      id = userExistInNewsletter.userId;
+      data.subscribe = true;
+    } else {
+      id = uuidV4();
+    }
+
+    const passwordHash = await hash(data.password, 8);
+
+    Object.assign(data, { id, password: passwordHash });
+    const customer = await CustomerRepository.create(data);
     return { customer };
   };
 
@@ -134,6 +146,28 @@ const useCustomer = () => {
     )),
   });
 
+  const SubscribeNewsletter = async ({ email }) => {
+    const userExistInNewsletter = await checkNewsletterExist({ email });
+    if (userExistInNewsletter) return { subscribed: true };
+
+    const user = await checkEmailExists({ email });
+    if (user && !user.subscribe) {
+      await CustomerRepository.findOneAndUpdate(
+        { email },
+        { subscribe: true },
+        { new: true }
+      );
+      const customerData = { userId: user.id, email };
+      await CustomerNewsletterRepository.create(customerData);
+    }
+
+    const userId = uuidV4();
+    const customerData = { userId, email };
+    await CustomerNewsletterRepository.create(customerData);
+
+    return await SendEmailWelcomeNewsletter({ email });
+  };
+
   return {
     CustomerList,
     CustomerInfo,
@@ -146,6 +180,7 @@ const useCustomer = () => {
     RequestPwdResetEmail,
     ResetPassword,
     UpdateAvatarImage,
+    SubscribeNewsletter,
   };
 };
 
