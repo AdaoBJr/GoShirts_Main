@@ -16,6 +16,7 @@ const {
   RequestPwdResetEmail,
   ResetPassword,
   UpdateAvatarImage,
+  SubscribeNewsletter,
 } = useCustomer();
 
 const {
@@ -62,5 +63,6 @@ export default {
     requestPwdResetEmail: async (_, { email }) => await RequestPwdResetEmail({ email }),
     resetPassword: async (_, { data }) => await ResetPassword({ data }),
     updateAvatarImage: async (_, args) => await UpdateAvatarImage({ args }),
+    subscribeNewsletter: async (_, { email }) => await SubscribeNewsletter({ email }),
   },
 };
