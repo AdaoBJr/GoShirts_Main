@@ -186,6 +186,10 @@ type CustomerSubscribed {
   subscribed: Boolean!
 }
 
+type CustomerUnsubscribed {
+  unsubscribed: Boolean!
+}
+
 # QUERIES / MUTATIONS
 
 type Query {
@@ -210,4 +214,5 @@ type Mutation {
   resetPassword(data: ResetPwdInput!): ResetedPassword!
   updateAvatarImage(file: String!): UpdatedAvatar!
   subscribeNewsletter(email: String!): CustomerSubscribed!
+  unsubscribeNewsletter(email: String!): CustomerUnsubscribed!
 }
