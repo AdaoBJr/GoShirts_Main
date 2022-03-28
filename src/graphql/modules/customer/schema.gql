@@ -21,6 +21,7 @@ input CustomerInput {
   password: String!
   dateOfBirth: String!
   gender: Int!
+  subscribe: Boolean
   avatarImage: String
 }
 
@@ -33,6 +34,7 @@ input CustomerUpdateInput {
   password: String
   date_of_birth: String
   gender: Int
+  subscribe: Boolean
 }
 
 input CustomerAddressInput {
@@ -78,6 +80,7 @@ type Customer {
   password: String!
   dateOfBirth: String!
   gender: Int!
+  subscribe: Boolean!
   avatarImage: String
   address: [CustomerAddress!]!
   wishlist: CustomerWishlist
@@ -179,6 +182,10 @@ type UpdatedAvatar {
   updated: Boolean!
 }
 
+type CustomerSubscribed {
+  subscribed: Boolean!
+}
+
 # QUERIES / MUTATIONS
 
 type Query {
@@ -202,4 +209,5 @@ type Mutation {
   requestPwdResetEmail(email: String!): RequestedEmail!
   resetPassword(data: ResetPwdInput!): ResetedPassword!
   updateAvatarImage(file: String!): UpdatedAvatar!
+  subscribeNewsletter(email: String!): CustomerSubscribed!
 }
