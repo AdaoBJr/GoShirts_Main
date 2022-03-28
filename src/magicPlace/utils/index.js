@@ -8,6 +8,7 @@ import checkTokenExists from './checkTokenExists';
 import checkUserIdExists from './checkUserIdExists';
 import checkAddressExists from './checkAddressExists';
 import checkProductExists from './checkProductExists';
+import checkNewsletterExist from './checkNewsletterExist';
 import checkProductOnRepos from './checkProductOnRepos';
 import checkWishlistExist from './checkWishlistExist';
 import increaseProductWishlist from './increaseProductWishlist';
@@ -24,8 +25,9 @@ export {
   checkUserIdExists,
   checkAddressExists,
   checkProductExists,
-  checkProductOnRepos,
+  checkNewsletterExist,
   checkWishlistExist,
+  checkProductOnRepos,
   increaseProductWishlist,
   decreaseProductWishlist,
 };
