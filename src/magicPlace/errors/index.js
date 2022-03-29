@@ -7,7 +7,7 @@ export {
   tokenIsMissing,
   tokenInvalidOrUnath,
   expiredSession,
-  userDoesNotExist,
+  dataEntryIncorrect,
   addressDoesNotExist,
   productExists,
   productDoesNotExists,
