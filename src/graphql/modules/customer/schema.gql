@@ -69,6 +69,11 @@ input ResetPwdInput {
   newPassword: String!
 }
 
+input ResetEmailInput {
+  userId: String!
+  newEmail: String!
+}
+
 # BASE SCHEMAS
 type Customer {
   id: ID!
@@ -177,6 +182,10 @@ type ResetedPassword {
   newPassword: Boolean!
 }
 
+type ResetedEmail {
+  newEmail: Boolean!
+}
+
 type UpdatedAvatar {
   token: String!
   updated: Boolean!
@@ -210,9 +219,10 @@ type Mutation {
   signOutCustomer: SignOutCustomer!
   addProductsToWishlist(data: [CustomerWishlistInput!]!): CreatedWishlist!
   removeProductsToWishlist(data: [CustomerWishlistInput!]!): RemovedWishlist!
-  requestPwdResetEmail(email: String!): RequestedEmail!
-  requestChangeEmail(email: String!): RequestedEmail!
+  requestResetPwd(email: String!): RequestedEmail!
+  requestResetEmail(email: String!): RequestedEmail!
   resetPassword(data: ResetPwdInput!): ResetedPassword!
+  resetEmail(data: ResetEmailInput!): ResetedEmail!
   updateAvatarImage(file: String!): UpdatedAvatar!
   subscribeNewsletter(email: String!): CustomerSubscribed!
   unsubscribeNewsletter(email: String!): CustomerUnsubscribed!
