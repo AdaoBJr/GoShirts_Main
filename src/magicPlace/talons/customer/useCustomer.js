@@ -28,8 +28,10 @@ import {
 } from '../../../repositories/mongodb/models/customer';
 
 import { useMailProvider } from '../../../providers/mailProvider/customer';
+import { dataEntryIncorrect } from '../../errors/msgError';
 
-const { SendForgotMail, SendEmailWelcomeNewsletter } = useMailProvider();
+const { SendMailForgotPwd, SendChangeEmail, SendEmailWelcomeNewsletter } =
+  useMailProvider();
 
 const useCustomer = () => {
   const CustomerList = async () => await CustomerRepository.find();
@@ -149,12 +151,24 @@ const useCustomer = () => {
 
   const RequestPwdResetEmail = async ({ email }) => {
     const user = await checkEmailExists({ email });
-    if (!user) ApiError(emailOrPwdIncorrect);
+    if (!user) ApiError(dataEntryIncorrect);
+    const { id, firstname } = user;
 
-    const token = await generateTokenResetEmail({ id: user.id });
-    const userData = { token, email, firstname: user.firstname, lastname: user.lastname };
+    const token = await generateTokenResetEmail({ id });
+    const userData = { token, email, firstname };
 
-    return await SendForgotMail({ userData });
+    return await SendMailForgotPwd({ userData });
+  };
+
+  const RequestChangeEmail = async ({ email }) => {
+    const user = await checkEmailExists({ email });
+    if (!user) ApiError(dataEntryIncorrect);
+    const { id, firstname } = user;
+
+    const token = await generateTokenResetEmail({ id });
+    const userData = { token, email, firstname };
+
+    return await SendChangeEmail({ userData });
   };
 
   const ResetPassword = async ({ data: { userId, newPassword } }) => {
@@ -204,6 +218,7 @@ const useCustomer = () => {
     SignInCustomer,
     SignOutCustomer,
     RequestPwdResetEmail,
+    RequestChangeEmail,
     ResetPassword,
     UpdateAvatarImage,
   };
