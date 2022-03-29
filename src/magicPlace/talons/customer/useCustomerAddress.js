@@ -3,7 +3,7 @@ import { CustomerAddressRepository } from '../../../repositories/mongodb/models/
 import ApiError, {
   addressDoesNotExist,
   emailExists,
-  userDoesNotExist,
+  dataEntryIncorrect,
 } from '../../errors';
 
 import {
@@ -19,7 +19,7 @@ const useCustomerAddress = () => {
 
   const CreateCustomerAddress = async ({ args: { id, token, data } }) => {
     const user = await checkUserIdExists({ id });
-    if (!user) ApiError(userDoesNotExist);
+    if (!user) ApiError(dataEntryIncorrect);
 
     const customerData = { userId: id, ...data };
     const customerAddress = await CustomerAddressRepository.create(customerData);
@@ -30,7 +30,7 @@ const useCustomerAddress = () => {
 
   const UpdateCustomerAddress = async ({ args: { id, token, data } }) => {
     const user = await checkUserIdExists({ id });
-    if (!user) ApiError(userDoesNotExist);
+    if (!user) ApiError(dataEntryIncorrect);
 
     const userExists = await checkEmailExists({ email: data.email });
     if (userExists) ApiError(emailExists);
@@ -45,7 +45,7 @@ const useCustomerAddress = () => {
 
   const DeleteCustomerAddress = async ({ args: { id: userId, ID: _id } }) => {
     const user = await checkUserIdExists({ id: userId });
-    if (!user) ApiError(userDoesNotExist);
+    if (!user) ApiError(dataEntryIncorrect);
 
     const address = await checkAddressExists({ _id });
     if (!address) ApiError(addressDoesNotExist);

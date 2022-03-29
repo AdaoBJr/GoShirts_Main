@@ -1,7 +1,7 @@
 import ApiError, {
   tokenInvalidOrUnath,
   tokenIsMissing,
-  userDoesNotExist,
+  dataEntryIncorrect,
 } from '../../errors';
 import { checkTokenExists, checkUserIdExists, decodeToken } from '../../utils';
 
@@ -21,7 +21,7 @@ const isAuth = async (resolve, parent, args, context, info) => {
   const { id } = decodeToken({ token });
 
   const userExists = await checkUserIdExists({ id });
-  if (!userExists) ApiError(userDoesNotExist);
+  if (!userExists) ApiError(dataEntryIncorrect);
 
   Object.assign(args, { id, token });
   return await resolve(parent, args, context, info);

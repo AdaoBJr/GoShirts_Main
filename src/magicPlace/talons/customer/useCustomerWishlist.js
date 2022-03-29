@@ -2,7 +2,7 @@ import { CustomerWishlistRepository } from '../../../repositories/mongodb/models
 import ApiError, {
   productDoesNotExists,
   unexpectedError,
-  userDoesNotExist,
+  dataEntryIncorrect,
   wishlistDoesNotExistsOrIsEmpty,
 } from '../../errors';
 import {
@@ -33,7 +33,7 @@ const useCustomerWishlist = () => {
 
   const AddProductsToWishlist = async ({ args: { id: userId, token, data } }) => {
     const user = await checkUserIdExists({ userId });
-    if (!user) ApiError(userDoesNotExist);
+    if (!user) ApiError(dataEntryIncorrect);
 
     const wishDB = await checkWishlistExist({ userId });
     const { wishChecked, wishData } = await checkProductOnRepos({ data });
@@ -62,7 +62,7 @@ const useCustomerWishlist = () => {
 
   const RemoveProductsToWishlist = async ({ args: { id: userId, token, data } }) => {
     const user = await checkUserIdExists({ userId });
-    if (!user) ApiError(userDoesNotExist);
+    if (!user) ApiError(dataEntryIncorrect);
 
     const wishDB = await checkWishlistExist({ userId });
     if (!wishDB) ApiError(wishlistDoesNotExistsOrIsEmpty);
