@@ -149,7 +149,7 @@ const useCustomer = () => {
     signOut: !!(await CustomerTokensRepository.findOneAndDelete(token)),
   });
 
-  const RequestPwdResetEmail = async ({ email }) => {
+  const RequestResetPwd = async ({ email }) => {
     const user = await checkEmailExists({ email });
     if (!user) ApiError(dataEntryIncorrect);
     const { id, firstname } = user;
@@ -160,7 +160,7 @@ const useCustomer = () => {
     return await SendMailForgotPwd({ userData });
   };
 
-  const RequestChangeEmail = async ({ email }) => {
+  const RequestResetEmail = async ({ email }) => {
     const user = await checkEmailExists({ email });
     if (!user) ApiError(dataEntryIncorrect);
     const { id, firstname } = user;
@@ -197,6 +197,30 @@ const useCustomer = () => {
     return { newPassword: !!resetedPwd };
   };
 
+  const ResetEmail = async ({ data: { userId, newEmail } }) => {
+    const customerToken = await checkTokenExists({ userId });
+    if (!customerToken) ApiError(tokenInvalidOrUnath);
+
+    const userExists = await checkUserIdExists({ userId });
+    if (!userExists) ApiError(tokenInvalidOrUnath);
+
+    const tokens = customerToken.items;
+    if (tokens.length > 1 || !tokens.length) ApiError(tokenInvalidOrUnath);
+
+    const token = decodeToken({ token: tokens[0] });
+    if (!token) ApiError(expiredSession);
+
+    const changedEmail = await CustomerRepository.findOneAndUpdate(
+      { id: userId },
+      { email: newEmail },
+      { new: true }
+    );
+
+    await CustomerTokensRepository.deleteMany({ userId });
+
+    return { newEmail: !!changedEmail };
+  };
+
   const UpdateAvatarImage = async ({ args: { id, token, file } }) => ({
     token: generateRefreshToken({ token }),
     updated: !!(await CustomerRepository.findOneAndUpdate(
@@ -217,9 +241,10 @@ const useCustomer = () => {
     CreateCustomer,
     SignInCustomer,
     SignOutCustomer,
-    RequestPwdResetEmail,
-    RequestChangeEmail,
+    RequestResetPwd,
+    RequestResetEmail,
     ResetPassword,
+    ResetEmail,
     UpdateAvatarImage,
   };
 };
